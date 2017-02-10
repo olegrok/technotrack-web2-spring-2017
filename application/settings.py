@@ -18,6 +18,7 @@ from ConfigParser import ConfigParser
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 config = ConfigParser()
+# print os.path.join(BASE_DIR, 'django.conf')
 config.read(os.path.join(BASE_DIR, '../django.conf'))
 
 # Quick-start development settings - unsuitable for production
@@ -50,7 +51,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
