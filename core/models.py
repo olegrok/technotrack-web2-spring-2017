@@ -13,6 +13,7 @@ class User(AbstractUser):
     first_name = models.CharField(u'имя', max_length=30, blank=False)
     last_name = models.CharField(u'фамилия', max_length=30, blank=True)
     email = models.EmailField(u'e-mail', blank=False, unique=True)
+    avatar = models.ImageField(u'фото', blank=True, upload_to='avatars')
 
     class Meta:
         verbose_name = u'пользователь'
