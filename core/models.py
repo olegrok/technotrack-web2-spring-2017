@@ -10,9 +10,6 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class User(AbstractUser):
-    first_name = models.CharField(u'имя', max_length=30, blank=False)
-    last_name = models.CharField(u'фамилия', max_length=30, blank=True)
-    email = models.EmailField(u'e-mail', blank=False, unique=True)
     avatar = models.ImageField(u'фото', blank=True, upload_to='avatars')
 
     class Meta:
@@ -21,25 +18,31 @@ class User(AbstractUser):
 
 
 class Dated(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name=u'дата создания')
+    updated = models.DateTimeField(auto_now=True, verbose_name=u'дата изменения')
 
     class Meta:
+        verbose_name = u'датированный'
+        verbose_name_plural = u'датированные'
         abstract = True
 
 
 class Named(models.Model):
-    title = models.CharField(max_length=128, blank=False)
+    title = models.CharField(max_length=128, blank=False, verbose_name=u'заголовок')
 
     class Meta:
         abstract = True
+        verbose_name = u'названный'
+        verbose_name_plural = u'названные'
 
 
 class Authored(models.Model):
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, verbose_name='автор')
 
     class Meta:
         abstract = True
+        verbose_name = u'имеющий автора'
+        verbose_name_plural = u'имеющие автора'
 
 
 class Attached(models.Model):
@@ -49,6 +52,5 @@ class Attached(models.Model):
 
     class Meta:
         abstract = True
-
-
-
+        verbose_name = u'принадлежащий'
+        verbose_name = u'принадлежащие'
