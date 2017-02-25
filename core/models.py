@@ -30,6 +30,9 @@ class Dated(models.Model):
 class Named(models.Model):
     title = models.CharField(max_length=128, blank=False, verbose_name=u'заголовок')
 
+    def get_title(self):
+        return self.title
+
     class Meta:
         abstract = True
         verbose_name = u'названный'
@@ -37,7 +40,7 @@ class Named(models.Model):
 
 
 class Authored(models.Model):
-    author = models.ForeignKey(User, verbose_name='автор')
+    author = models.ForeignKey(User, verbose_name=u'автор')
 
     class Meta:
         abstract = True

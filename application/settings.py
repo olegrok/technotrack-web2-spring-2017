@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-from ConfigParser import ConfigParser
+try:
+    from ConfigParser import ConfigParser
+except:
+    from configparser import ConfigParser
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -30,7 +33,7 @@ SECRET_KEY = config.get('main', 'SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [u'project']
 
 
 # Application definition
@@ -44,10 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'core.apps.CoreConfig',
-    'like',
-    'chat',
-    'friendship',
-    'ugc',
+    'like.apps.LikeConfig',
+    'chat.apps.ChatConfig',
+    'friendship.apps.FriendshipConfig',
+    'ugc.apps.UgcConfig',
 ]
 
 MIDDLEWARE = [
@@ -96,6 +99,9 @@ DATABASES = {
         'USER': config.get('db', 'USER'),
         'PASSWORD': config.get('db', 'PASSWORD'),
         'HOST': 'localhost',
+        'OPTIONS': {
+                    'use_unicode': True,
+                    },
     }
 }
 
