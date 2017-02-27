@@ -1,36 +1,9 @@
 # coding: utf-8
 from __future__ import unicode_literals
-
 from django.db import models
 from core.models import Authored, Dated, Named, Attached
 from like.models import LikeAble
-from django.contrib.contenttypes.fields import GenericRelation, ContentType
-
-
-class Event(Authored, Dated, Named, Attached):
-    class Meta:
-        verbose_name = u'Событие'
-        verbose_name_plural = u'Событие'
-
-    def __str__(self):
-        return self.title
-
-
-class EventAble(models.Model):
-    event = GenericRelation(
-        Event,
-        content_type_field='content_type',
-        object_id_field='object_id',
-    )
-
-    def get_description(self):
-        return NotImplementedError
-
-    def get_author(self):
-        return NotImplementedError
-
-    class Meta:
-        abstract = True
+from feed.models import EventAble
 
 
 class Post(Authored, Dated, LikeAble, EventAble):
@@ -39,3 +12,6 @@ class Post(Authored, Dated, LikeAble, EventAble):
     class Meta:
         verbose_name = u'Пост'
         verbose_name_plural = u'Посты'
+
+    def get_description(self):
+        return u'{} написал пост'.format(self.author.username)

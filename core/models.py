@@ -47,6 +47,9 @@ class Authored(models.Model):
         verbose_name = u'имеющий автора'
         verbose_name_plural = u'имеющие автора'
 
+    def get_author(self):
+        return self.author
+
 
 class Attached(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -56,4 +59,4 @@ class Attached(models.Model):
     class Meta:
         abstract = True
         verbose_name = u'принадлежащий'
-        verbose_name = u'принадлежащие'
+        verbose_name_plural = u'принадлежащие'

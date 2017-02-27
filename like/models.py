@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from core.models import Authored, Dated, Attached
+from feed.models import Achieve
 from django.contrib.contenttypes.fields import GenericRelation
 
 
@@ -17,6 +18,12 @@ class Like(Authored, Dated, Attached):
 class LikeAble(models.Model):
     likes = GenericRelation(
         Like,
+        content_type_field='content_type',
+        object_id_field='object_id'
+    )
+
+    achieve = GenericRelation(
+        Achieve,
         content_type_field='content_type',
         object_id_field='object_id'
     )

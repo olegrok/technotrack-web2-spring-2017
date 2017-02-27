@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 
 
-class LikeConfig(AppConfig):
-    name = 'like'
+class FeedConfig(AppConfig):
+    name = 'feed'
 
     def ready(self):
         import signals

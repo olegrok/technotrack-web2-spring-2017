@@ -33,7 +33,7 @@ SECRET_KEY = config.get('main', 'SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'project']
+ALLOWED_HOSTS = [u'project', u'localhost']
 
 
 # Application definition
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'chat.apps.ChatConfig',
     'friendship.apps.FriendshipConfig',
     'ugc.apps.UgcConfig',
+    'feed.apps.FeedConfig'
 ]
 
 MIDDLEWARE = [
@@ -100,6 +101,8 @@ DATABASES = {
         'PASSWORD': config.get('db', 'PASSWORD'),
         'HOST': 'localhost',
         'OPTIONS': {
+                    'init_command': 'SET character_set_connection=utf8,collation_connection=utf8_unicode_ci',
+                    'charset': 'utf8',
                     'use_unicode': True,
                     },
     }
