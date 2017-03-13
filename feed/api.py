@@ -1,5 +1,5 @@
 from rest_framework import serializers, viewsets, permissions
-from .models import Event
+from .models import Event, Achieve
 from application.api import router
 from django.db.models import Q
 from core.models import User
@@ -35,6 +35,12 @@ class EventViewSet(viewsets.ModelViewSet):
             q = q.filter(Q(author__username=username) | Q(author__in=friends))
             print q
         return q
+
+
+class AchieveSerializer(viewsets.ModelViewSet):
+    class Meta:
+        model = Achieve
+        fields = ('title', )
 
 
 router.register('events', EventViewSet)

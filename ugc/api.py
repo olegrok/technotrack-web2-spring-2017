@@ -4,15 +4,19 @@ from application.api import router
 from .permissions import IsOwnerOrReadOnly
 from core.api import UserSerializer
 from django.utils import timezone
+from like.api import LikeSerializer
+from django.db.models.aggregates import Count
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
-    author = UserSerializer()
+    author = UserSerializer(read_only=True)
+    likes = LikeSerializer(many=True, read_only=True)
+    likes_count = serializers.IntegerField(source='likes.count', read_only=True)
 
     class Meta:
         model = Post
-        fields = ('pk', 'content', 'author', 'created',)
-        depth = 3
+        fields = ('pk', 'content', 'author', 'created', 'likes', 'likes_count')
+        depth = 1
 
 
 class PostViewSet(viewsets.ModelViewSet):

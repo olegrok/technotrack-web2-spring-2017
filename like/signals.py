@@ -15,7 +15,7 @@ def post_init_like(instance, *args, **kwargs):
 
 def create_like(instance, *args, **kwargs):
     if instance.content_object.likes.count() == likes_for_achieve:
-        Achieve.objects.create(content_object=instance.content_object, title=u'100 лайков')
+        Achieve.objects.create(content_object=instance.content_object, title=u'100 лайков', author=instance.content_object.author)
 
 
 def delete_like(instance, *args, **kwargs):

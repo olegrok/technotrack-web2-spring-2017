@@ -7,16 +7,17 @@ from .permissions import IsOwnerOrReadOnly
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    author = UserSerializer()
+    author = UserSerializer(read_only=True)
+    # chat = 'ChatSerializer'
 
     class Meta:
         model = Message
-        fields = ['content', 'author', ]
+        fields = ['content', 'author', 'chat', ]
         depth = 1
 
 
 class ChatSerializer(serializers.ModelSerializer):
-    author = UserSerializer()
+    author = UserSerializer(read_only=True)
     messages = MessageSerializer(many=True)
 
     class Meta:
