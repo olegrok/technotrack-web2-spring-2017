@@ -15,9 +15,11 @@ class TestEvent(TestCase):
     def testFriendShip(self):
         self.friendshipRequest = FriendshipRequest.objects.create(initiator=self.User1, recipient=self.User2)
         self.friendshipRequest.save()
+        #test it
         self.friendshipRequest.approved = True
         self.friendshipRequest.save()
         self.friendships = Friendship.objects.all()
+        # friendship exist
         self.assertEqual(self.friendships[0].event.exists(), True)
         self.assertEqual(self.friendships[1].event.exists(), True)
         self.assertEqual(self.friendships[0].event.get(), Event.objects.first())

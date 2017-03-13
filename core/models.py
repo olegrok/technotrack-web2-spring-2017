@@ -11,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 
 class User(AbstractUser):
     avatar = models.ImageField(u'фото', blank=True, upload_to='avatars')
+    # REQUIRED_FIELDS = ['e-mail', 'first_name', 'last_name', ]
 
     class Meta:
         verbose_name = u'пользователь'
@@ -48,7 +49,7 @@ class Authored(models.Model):
         verbose_name_plural = u'имеющие автора'
 
     def get_author(self):
-        return self.author
+        return NotImplementedError
 
 
 class Attached(models.Model):

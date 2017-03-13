@@ -9,6 +9,10 @@ from django.contrib.contenttypes.fields import GenericRelation
 
 
 class Like(Authored, Dated, Attached):
+
+    def __unicode__(self):
+        return u'Like to {} {} by {}'.format(str(self.content_object), self.content_object.pk, self.author.username)
+
     class Meta:
         unique_together = (('author', 'content_type', 'object_id'),)
         verbose_name = u'лайк'

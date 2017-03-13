@@ -1,13 +1,12 @@
 from django.contrib import admin
 from .models import Like
-from django.contrib.contenttypes.admin import GenericInlineModelAdmin
+from django.contrib.contenttypes.admin import GenericStackedInline
 
 
-class LikesInLine(admin.StackedInline, GenericInlineModelAdmin):
+class LikesInLine(GenericStackedInline):
     model = Like
-    ct_field = 'content_type'
-    ct_fk_field = 'object_id'
-    extra = 0
+    can_delete = True
+    extra = 2
 
 
 class LikeAbleAdmin(admin.ModelAdmin):
