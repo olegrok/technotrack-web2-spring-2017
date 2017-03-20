@@ -5,7 +5,9 @@ from .permissions import IsOwnerOrReadOnly
 from core.api import UserSerializer
 from django.utils import timezone
 from like.api import LikeSerializer
+from friendship.models import Friendship
 from django.db.models.aggregates import Count
+from django.db.models import Q
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
@@ -30,9 +32,11 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         q = super(PostViewSet, self).get_queryset()
-        if self.request.query_params.get('username'):
-            print self.request.query_params.get('username')
-            q = q.filter(author__username=self.request.query_params.get('username'))
+        username = self.request.query_params.get('username')
+        if username != self.request.user.username and username is not None:
+            q = q.filter(Q(author__friendship__friend=self.request.user) & Q(author__username=username))
+        else:
+            q = q.filter(author=self.request.user)
         return q
 
 

@@ -4,36 +4,47 @@ from application.api import router
 from core.models import User
 from core.api import UserSerializer
 from .permissions import IsOwnerOrReadOnly
-
-
-class MessageSerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
-    # chat = 'ChatSerializer'
-
-    class Meta:
-        model = Message
-        fields = ['content', 'author', 'chat', ]
-        depth = 1
+from django.db.models import Q
+from application.settings import AUTH_USER_MODEL
 
 
 class ChatSerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
-    messages = MessageSerializer(many=True)
+    author = serializers.ReadOnlyField(source='author.id')
+    # messages = MessageSerializer(many=True)
 
     class Meta:
         model = Chat
-        fields = ['pk', 'title', 'author', 'created', 'messages', ]
+        fields = ['pk', 'title', 'author', 'created', ]
         depth = 1
 
 
-class UserChatSerializer(serializers.HyperlinkedModelSerializer):
+class MessageSerializer(serializers.HyperlinkedModelSerializer):
+    # author = UserSerializer()
+    # chat = ChatSerializer()
+    # author = serializers.ReadOnlyField(source='author.id')
+    # author = UserSerializer(source='author.id')
+
+    def validate(self, data):
+        if UserChat.objects.filter(Q(user=data['author']) & Q(chat=data['chat'])).exists():
+            return data
+        else:
+            raise serializers.ValidationError("Not in chat")
+
+    class Meta:
+        model = Message
+        fields = ['content', 'author', 'created', 'chat']
+
+
+class UserChatSerializer(serializers.ModelSerializer):
     # user = UserSerializer()
-    chat = ChatSerializer()
+    # chat = ChatSerializer(read_only=True)
+
+    #validate
 
     class Meta:
         model = UserChat
-        fields = ['chat', ]
-        depth = 1
+        fields = ['chat', 'user']
+        # depth = 1
 
 
 class ChatViewSet(viewsets.ModelViewSet):
@@ -71,15 +82,15 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = (permissions.IsAuthenticated, )
-
+    
     def perform_create(self, serializer):
+        print('perform create')
         serializer.save(author=self.request.user)
 
     def get_queryset(self):
         q = super(MessageViewSet, self).get_queryset()
-        username = self.request.query_params.get('username')
-        if username:
-            q = q.filter(chat__chats__user__username=username)
+        # username = self.request.query_params.get('username')
+        q = q.filter(chat__chats__user=self.request.user)
         return q
 
 router.register('chats', ChatViewSet)

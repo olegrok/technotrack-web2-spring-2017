@@ -31,7 +31,7 @@ class UserChat(models.Model):
 
 
 class Message(Authored, Dated):
-    content = models.TextField(max_length=1024, verbose_name=u'сообщщение')
+    content = models.TextField(max_length=1024, verbose_name=u'сообщение')
     chat = models.ForeignKey(Chat, related_name='messages', verbose_name=u'чат')
 
     def __unicode__(self):
