@@ -19,10 +19,9 @@ class ChatSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
-    # author = UserSerializer()
+    # author = serializers.HiddenField(default='author.id')
     # chat = ChatSerializer()
-    # author = serializers.ReadOnlyField(source='author.id')
-    # author = UserSerializer(source='author.id')
+    # author = serializers.ReadOnlyField()
 
     def validate(self, data):
         if UserChat.objects.filter(Q(user=data['author']) & Q(chat=data['chat'])).exists():
@@ -92,6 +91,11 @@ class MessageViewSet(viewsets.ModelViewSet):
         # username = self.request.query_params.get('username')
         q = q.filter(chat__chats__user=self.request.user)
         return q
+
+    # def get_serializer_context(self):
+    #     context = super(MessageViewSet, self).get_serializer_context()
+    #     context['author'] = self.request.user
+    #     return context
 
 router.register('chats', ChatViewSet)
 router.register('userchats', UserChatViewSet)
