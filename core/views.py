@@ -22,5 +22,9 @@ class UserProfileView(DetailView):
         return context
 
 
-def home(request):
+def login(request):
     return render(request, template_name='core/vkhome.html')
+
+
+def home(request):
+    return render(request, template_name='core/index.html')

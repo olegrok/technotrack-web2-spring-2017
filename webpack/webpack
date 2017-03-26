@@ -1,0 +1,2 @@
+#!/bin/bash
+nodejs $HOME/Web2/src/webpack/node_modules/webpack/bin/webpack.js

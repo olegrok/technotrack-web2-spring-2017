@@ -1,9 +1,9 @@
 from django.conf.urls import url
-from .views import home, UserProfileView
+from .views import home, UserProfileView, login
 
 urlpatterns = [
     # url(r'^social/myauth/$', VkView.as_view(), name='vkauth'),
-    url(r'^login/$', home, name='home'),
-    url(r'^profile/$', UserProfileView.as_view(), name='profile')
-
+    url(r'^login/$', login, name='login'),
+    url(r'^profile/$', UserProfileView.as_view(), name='profile'),
+    url(r'$', home, name='home'),
 ]
