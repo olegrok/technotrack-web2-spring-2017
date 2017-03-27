@@ -31,7 +31,17 @@ class AchieveViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated, ReadOnly)
 
     def get_queryset(self):
-        return Achieve.objects.none()
+        q = self.queryset
+        if 'pk' in self.kwargs:
+            pk = self.kwargs['pk']
+            return q.filter((Q(author__friendship__friend=self.request.user) | Q(author=self.request.user)) & Q(pk=pk))\
+                .distinct()
+        username = self.request.query_params.get('username')
+        if username != self.request.user.username and username is not None:
+            q = q.filter(Q(author__friendship__friend=self.request.user) & Q(author__username=username))
+        else:
+            q = q.filter(author=self.request.user)
+        return q
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
@@ -40,6 +50,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         Friendship: serializers.HyperlinkedRelatedField(view_name='friendship-detail', read_only=True),
         Post: serializers.HyperlinkedRelatedField(read_only=True, view_name='post-detail'),
     })
+    created = serializers.DateTimeField(read_only=True, format='%X %d %b %Y')
 
     class Meta:
         model = Event
@@ -55,7 +66,8 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         q = self.queryset
-        q = q.filter(Q(author=self.request.user) | Q(author__friendship__friend=self.request.user)).distinct()
+        q = q.filter(Q(author=self.request.user) | Q(author__friendship__friend=self.request.user))\
+            .distinct().order_by('-created')
         return q
 
     # def create(self, request, *args, **kwargs):
@@ -68,7 +80,7 @@ class UserEventViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated, ReadOnly)
 
     def get_queryset(self):
-        q = self.queryset
+        q = self.queryset.order_by('-created')
         username = self.request.query_params.get('username')
         if username and username != self.request.user.username:
             q = q.filter(Q(author__username=username) & Q(author__friendship__friend=self.request.user))

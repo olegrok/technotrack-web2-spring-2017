@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Col } from 'react-bootstrap';
 import CircularProgress from 'material-ui/CircularProgress';
 import PostComponent from './post';
 
@@ -15,12 +14,12 @@ class PostListComponent extends Component {
         key={post.id}
         author={post.author}
         title={post.title}
-        content={post.content}
+        content_object={post.content_object}
         date={post.created}
       />,
     );
     return (
-      <div>{ this.props.isLoading ?
+      <div> { this.props.isLoading ?
         <CircularProgress size={60} thickness={7} /> : list
       }
       </div>
@@ -38,7 +37,7 @@ PostListComponent.propTypes = {
       avatarUrl: React.PropTypes.string,
     }).isRequired,
     date: React.PropTypes.string.isRequired,
-    content: React.PropTypes.string.isRequired,
+    content_object: React.PropTypes.string.isRequired,
   })).isRequired,
   isLoading: React.PropTypes.bool,
 };

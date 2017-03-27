@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView
 from .models import User
 
+
 class UserProfileView(DetailView):
     template_name = 'core/profile.html'
     model = User
@@ -20,10 +21,6 @@ class UserProfileView(DetailView):
         # print VKOAuth2.get_scope()
         # print self.request.user.social_auth.get_social_auth(provider='vk-oauth2',uid='e-mail')
         return context
-
-
-def login(request):
-    return render(request, template_name='core/vkhome.html')
 
 
 def home(request):

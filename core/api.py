@@ -22,7 +22,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
@@ -32,8 +31,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if 'pk' in self.kwargs:
             pk = self.kwargs['pk']
             return q.filter((Q(friendship__friend=self.request.user) | Q(pk=self.request.user.pk)) & Q(pk=pk)).distinct()
-
-        username = q.query_params.get('username')
+        username = self.request.query_params.get('username')
         if username:
             return q.filter(username=username)
         return q.filter(pk=self.request.user.pk)

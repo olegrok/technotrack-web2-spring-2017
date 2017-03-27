@@ -7,6 +7,7 @@ from ugc.models import EventAble
 from django.contrib.contenttypes.fields import GenericRelation
 from feed.models import Event
 
+
 class FriendshipRequest(models.Model):
     initiator = models.ForeignKey(User, blank=False, related_name='initiator', verbose_name=u'отправитель')
     recipient = models.ForeignKey(User, blank=False, related_name='recipient', verbose_name=u'получатель')

@@ -12,25 +12,6 @@ import NavbarLeft from './components/navbarLeft';
 import PostFormComponent from './components/postForm';
 import PostListComponent from './components/postList';
 
-
-const DATE = '01.01.1980';
-const AUTHOR = {
-  avatarUrl: '/',
-  username: 'user',
-};
-const TEXT = 'Hello, World';
-
-
-const POST_LIST = [
-  { author: AUTHOR, date: DATE, content: TEXT },
-  { author: AUTHOR, date: DATE, content: TEXT },
-  { author: AUTHOR, date: DATE, content: TEXT },
-  { author: AUTHOR, date: DATE, content: TEXT },
-  { author: AUTHOR, date: DATE, content: TEXT },
-  { author: AUTHOR, date: DATE, content: TEXT },
-  { author: AUTHOR, date: DATE, content: TEXT },
-];
-
 class Page extends Component {
   state = {
     postList: [],
@@ -42,12 +23,6 @@ class Page extends Component {
       last_name: '',
       avatar: null,
     },
-  }
-
-  onCreate = (post) => {
-    this.setState({
-      postList: [post, ...this.state.postList],
-    });
   }
 
   componentDidMount() {
@@ -70,7 +45,6 @@ class Page extends Component {
       })
     .then(promise => promise.json())
     .then((json) => {
-      console.log(json[0]);
       this.setState({
         postList: json,
         isLoading: false,
@@ -86,6 +60,12 @@ class Page extends Component {
     //   },
     //   1000
     // );
+  }
+
+  onCreate = (post) => {
+    this.setState({
+      postList: [post, ...this.state.postList],
+    });
   }
 
   render() {
