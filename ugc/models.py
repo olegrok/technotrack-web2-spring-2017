@@ -4,10 +4,13 @@ from django.db import models
 from core.models import Authored, Dated, Named, Attached
 from like.models import LikeAble
 from feed.models import EventAble
+from django.contrib.contenttypes.fields import GenericRelation
+from feed.models import Event
 
 
 class Post(LikeAble, EventAble):
     content = models.TextField(blank=False, verbose_name=u'содержание')
+    event = GenericRelation(Event)
 
     class Meta:
         verbose_name = u'Пост'

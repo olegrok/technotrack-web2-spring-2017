@@ -51,7 +51,6 @@ class FriendshipViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         q = super(FriendshipViewSet, self).get_queryset()
-        print(self.request.query_params.get('username'))
         if self.request.query_params.get('username'):
             username = self.request.query_params.query_params.get('username')
             q = q.filter(author__username=username)

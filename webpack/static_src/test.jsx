@@ -69,23 +69,23 @@ class Page extends Component {
         credentials: 'same-origin',
       })
     .then(promise => promise.json())
-    .then(json => console.log(json));
-    // .then((json) => {
-    //   this.setState({
-    //     postList: json,
-    //     isLoading: false,
-    //   });
-    // });
+    .then((json) => {
+      console.log(json[0]);
+      this.setState({
+        postList: json,
+        isLoading: false,
+      });
+    });
 
-    window.setTimeout(
-      () => {
-        this.setState(
-          { postList: POST_LIST,
-            isLoading: false,
-          });
-      },
-      1000
-    );
+    // window.setTimeout(
+    //   () => {
+    //     this.setState(
+    //       { postList: POST_LIST,
+    //         isLoading: false,
+    //       });
+    //   },
+    //   1000
+    // );
   }
 
   render() {

@@ -5,6 +5,11 @@ from django.db.models import Q
 from core.models import User
 from core.api import UserSerializer
 from friendship.models import Friendship
+from generic_relations.relations import GenericRelatedField
+
+from friendship.api import FriendshipSerializer
+from ugc.models import Post
+from ugc.api import PostSerializer
 
 
 class ReadOnly(permissions.BasePermission):
@@ -14,12 +19,33 @@ class ReadOnly(permissions.BasePermission):
         return request.user.is_staff
 
 
+class AchieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Achieve
+        fields = ('title', )
+
+
+class AchieveViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Achieve.objects.all()
+    serializer_class = AchieveSerializer
+    permission_classes = (permissions.IsAuthenticated, ReadOnly)
+
+    def get_queryset(self):
+        return Achieve.objects.none()
+
+
 class EventSerializer(serializers.HyperlinkedModelSerializer):
-    content_object = serializers.HyperlinkedRelatedField(view_name='event-detail', read_only=True)
+    content_object = GenericRelatedField({
+        Achieve: serializers.HyperlinkedRelatedField(view_name='achieve-detail', read_only=True),
+        Friendship: serializers.HyperlinkedRelatedField(view_name='friendship-detail', read_only=True),
+        Post: serializers.HyperlinkedRelatedField(read_only=True, view_name='post-detail'),
+    })
 
     class Meta:
         model = Event
-        fields = ('author', 'created', 'title', 'content_object')
+        fields = ('author', 'created', 'title', 'content_object', 'id')
+        # exclude = ('content_object',)
+        depth = 0
 
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
@@ -28,7 +54,7 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated, ReadOnly)
 
     def get_queryset(self):
-        q = super(EventViewSet, self).get_queryset()
+        q = self.queryset
         q = q.filter(Q(author=self.request.user) | Q(author__friendship__friend=self.request.user)).distinct()
         return q
 
@@ -42,19 +68,13 @@ class UserEventViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated, ReadOnly)
 
     def get_queryset(self):
-        q = super(UserEventViewSet, self).get_queryset()
+        q = self.queryset
         username = self.request.query_params.get('username')
         if username and username != self.request.user.username:
             q = q.filter(Q(author__username=username) & Q(author__friendship__friend=self.request.user))
             return q
         return q.filter(author=self.request.user)
 
-
-class AchieveSerializer(viewsets.ModelViewSet):
-    class Meta:
-        model = Achieve
-        fields = ('title', )
-
-
 router.register('events', EventViewSet)
-router.register('userevents', UserEventViewSet)
+router.register('achieve', AchieveViewSet)
+# router.register('userevents', UserEventViewSet)

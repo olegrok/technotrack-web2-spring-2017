@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 from django.contrib.contenttypes.fields import GenericRelation, ContentType
 from core.models import Authored, Dated, Named, Attached
 
-
 class Event(Authored, Dated, Named, Attached):
     class Meta:
         verbose_name = u'Событие'
@@ -32,6 +31,7 @@ class EventAble(Authored, Dated):
 
 
 class Achieve(Named, Attached, EventAble):
+    event = GenericRelation(Event)
 
     def get_description(self):
         return u'{} получил достижение {}'.format(self.content_object.get_author().username, self.title)

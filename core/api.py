@@ -1,6 +1,7 @@
 from rest_framework import serializers, viewsets, permissions, fields
 from .models import User
 from application.api import router
+from django.db.models import Q
 # from .permissions import IsOwnerOrReadOnly
 
 
@@ -27,10 +28,15 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
 
     def get_queryset(self):
-        username = self.request.query_params.get('username')
+        q = self.queryset
+        if 'pk' in self.kwargs:
+            pk = self.kwargs['pk']
+            return q.filter((Q(friendship__friend=self.request.user) | Q(pk=self.request.user.pk)) & Q(pk=pk)).distinct()
+
+        username = q.query_params.get('username')
         if username:
-            return self.queryset.filter(username=username)
-        return self.queryset.filter(pk=self.request.user.pk)
+            return q.filter(username=username)
+        return q.filter(pk=self.request.user.pk)
 
 
 router.register('users', UserViewSet)

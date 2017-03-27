@@ -11,11 +11,12 @@ class PostListComponent extends Component {
     // }
 
     const list = this.props.postList.map(
-      (post, i) => <PostComponent
-        key={i}
+      post => <PostComponent
+        key={post.id}
         author={post.author}
+        title={post.title}
         content={post.content}
-        date={post.date}
+        date={post.created}
       />,
     );
     return (
