@@ -8,7 +8,6 @@ from core.api import UserSerializer
 
 
 class LikeSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Like
         fields = ('author', 'object_id', 'content_type')
@@ -26,7 +25,6 @@ class LikeViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         q = super(LikeViewSet, self).get_queryset()
         post_id = self.request.query_params.get('post')
-        print post_id
         if post_id:
             q = q.filter(Q(object_id=post_id) & Q(content_type=ContentType.objects.get_for_model(Post)))
             return q

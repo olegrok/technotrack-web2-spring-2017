@@ -6,6 +6,7 @@ from core.api import UserSerializer
 from .permissions import IsOwnerOrReadOnly
 from django.db.models import Q
 from application.settings import AUTH_USER_MODEL
+from rest_framework.pagination import PageNumberPagination
 
 
 class ChatSerializer(serializers.ModelSerializer):
@@ -76,10 +77,17 @@ class UserChatViewSet(viewsets.ModelViewSet):
         return q
 
 
+class MessagePagination(PageNumberPagination):
+    page_size = 50
+    page_size_query_param = 'page_size'
+    max_page_size = 200
+
+
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = (permissions.IsAuthenticated, )
+    pagination_class = MessagePagination
     
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

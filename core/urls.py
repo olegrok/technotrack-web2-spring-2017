@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import UserProfileView
+from .views import UserProfileView, RegisterView
 from django.contrib.auth.views import login, logout
 from django.contrib.auth.decorators import login_required
 from application.settings import LOGIN_URL
@@ -13,5 +13,6 @@ urlpatterns = [
                              'extra_context': {
                                 'authform': AuthenticationForm()
                              }}, name='login'),
+    url(r'^registration/$', RegisterView.as_view(), name='registration'),
     url(r'^profile/$', UserProfileView.as_view(), name='profile'),
 ]

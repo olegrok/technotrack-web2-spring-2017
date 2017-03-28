@@ -14,11 +14,17 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     username = fields.ReadOnlyField()
+    first_name = fields.SerializerMethodField('get_first_name_to_friend')
 
     class Meta:
         model = User
         fields = ('pk', 'username', 'first_name', 'last_name', 'avatar')
         depth = 3
+
+    def get_first_name_to_friend(self, obj):
+        print(self.context['request'].user)
+        print(self.context['request'].user.friends)
+        return obj.first_name
 
 
 class UserViewSet(viewsets.ModelViewSet):
