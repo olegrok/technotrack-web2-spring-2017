@@ -61,6 +61,7 @@
     "file-loader": "^0.10.1",
     "imports-loader": "^0.7.1",
     "install": "^0.8.7",
+    "jscs": "^3.0.7",
     "less": "^2.7.2",
     "less-loader": "^4.0.2",
     "no-op": "^1.0.3",

@@ -27,7 +27,7 @@ class NavbarTop extends Component {
           <Nav pullRight>
             <NavItem eventKey={1} href="#">{this.props.user.username}</NavItem>
             {/* <NavItem eventKey={2} href="#"></NavItem> */}
-            <Avatar src="../static/ava.png" size={50} />
+            <Avatar src={this.props.user.avatar} size={50} />
           </Nav>
         </Navbar.Collapse>
       </Navbar>

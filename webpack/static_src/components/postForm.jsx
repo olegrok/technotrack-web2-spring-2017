@@ -4,27 +4,27 @@ import { Button, Form, FormControl, Row, Panel } from 'react-bootstrap';
 class PostFormComponent extends Component {
   state = {
     content: '',
-  }
+  };
 
   onCreate = (e) => {
     e.preventDefault();
     this.props.onCreate({
       author: {
-        username: 'user1',
-        avatarUrl: '/',
+        username: this.props.username,
+        avatarUrl: this.props.avatar,
       },
       ...this.state,
     });
     this.setState({
       content: '',
     });
-  }
+  };
 
   onChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
     });
-  }
+  };
 
   render() {
     return (
@@ -56,6 +56,8 @@ class PostFormComponent extends Component {
 
 PostFormComponent.propTypes = {
   onCreate: React.PropTypes.func.isRequired,
+  username: React.PropTypes.string.isRequired,
+  avatar: React.PropTypes.string.isRequired,
 };
 
 export default PostFormComponent;

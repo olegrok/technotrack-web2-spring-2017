@@ -4,9 +4,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Grid, Col } from 'react-bootstrap';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
 import './styles/bootstrap-3/css/bootstrap.css';
-
 import NavbarTop from './components/navbarTop';
 import NavbarLeft from './components/navbarLeft';
 import PostFormComponent from './components/postForm';
@@ -23,7 +21,7 @@ class Page extends Component {
       last_name: '',
       avatar: null,
     },
-  }
+  };
 
   componentDidMount() {
     fetch('http://localhost:8080/api/users/?format=json',
@@ -66,7 +64,7 @@ class Page extends Component {
     this.setState({
       postList: [post, ...this.state.postList],
     });
-  }
+  };
 
   render() {
     return (
@@ -76,7 +74,11 @@ class Page extends Component {
           <Grid fluid>
             <NavbarLeft />
             <Col xs={12} md={8}>
-              <PostFormComponent onCreate={this.onCreate} />
+              <PostFormComponent
+                onCreate={this.onCreate}
+                username={this.state.user.username}
+                avatar={this.state.user.avatar}
+              />
               <PostListComponent
                 isLoading={this.state.isLoading}
                 postList={this.state.postList}
@@ -91,5 +93,5 @@ class Page extends Component {
 
 ReactDOM.render(
   <Page />,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

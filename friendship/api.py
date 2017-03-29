@@ -6,9 +6,6 @@ from core.api import UserSerializer
 
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
-    initiator = UserSerializer()
-    recipient = UserSerializer()
-
     class Meta:
         model = FriendshipRequest
         fields = ('initiator', 'recipient', 'approved',)
@@ -21,7 +18,8 @@ class FriendshipRequestViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user, approved=False)
+        print self.request
+        serializer.save(initiator=self.request.user, approved=False)
 
     def get_queryset(self):
         q = super(FriendshipRequestViewSet, self).get_queryset()
@@ -38,7 +36,6 @@ class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friendship
         fields = ['author', 'friend', 'created']
-        depth = 2
 
 
 class FriendshipViewSet(viewsets.ModelViewSet):

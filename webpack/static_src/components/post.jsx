@@ -10,12 +10,12 @@ class PostComponent extends Component {
       username: '',
       first_name: '',
       last_name: '',
-      avatar: null,
+      avatar: '../static/ava.jpg',
     },
     date: '',
     content_object: '',
     title: '',
-  }
+  };
 
   componentDidMount() {
     fetch(this.props.content_object,
@@ -37,7 +37,6 @@ class PostComponent extends Component {
       })
     .then(promise => promise.json())
     .then((json) => {
-      console.log(json);
       this.setState({
         user: json,
       });
@@ -48,7 +47,7 @@ class PostComponent extends Component {
     return (
       <Row>
         <Panel
-          header=<div><Avatar src="../static/ava.png" size={30} /> {this.props.title}</div>
+          header=<div><Avatar src={this.state.user.avatar} size={30} /> {this.props.title}</div>
           footer={this.props.date}
           bsStyle="info"
         >
@@ -60,17 +59,9 @@ class PostComponent extends Component {
 }
 
 PostComponent.propTypes = {
-  author: React.propTypes.string.isRequired,
-  user: React.PropTypes.shape({
-    pk: React.propTypes.number,
-    username: React.PropTypes.string,
-    avatar: React.PropTypes.string,
-    first_name: React.PropTypes.string,
-    last_name: React.PropTypes.string,
-  }).isRequired,
+  author: React.PropTypes.string.isRequired,
   date: React.PropTypes.string.isRequired,
   content_object: React.PropTypes.string.isRequired,
-  content: React.PropTypes.string.isRequired,
   title: React.PropTypes.string.isRequired,
 };
 

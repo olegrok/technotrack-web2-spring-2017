@@ -93,12 +93,11 @@ class MessageViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
     def get_queryset(self):
+        q = self.queryset.filter(chat__chats__user=self.request.user)
         chat_id = self.request.query_params.get('chat')
         if chat_id:
-            query = Q(chat__chats__user=self.request.user) & Q(chat__id=chat_id)
-        else:
-            query = Q(chat__chats__user=self.request.user)
-        return self.queryset.filter(query)
+            q = q.filter(chat__id=chat_id)
+        return q
 
     # def get_serializer_context(self):
     #     context = super(MessageViewSet, self).get_serializer_context()

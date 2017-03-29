@@ -15,6 +15,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     username = fields.ReadOnlyField()
     first_name = fields.SerializerMethodField('get_first_name_to_friend')
+    last_name = fields.SerializerMethodField('get_last_name_to_friend')
 
     class Meta:
         model = User
@@ -22,9 +23,16 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         depth = 3
 
     def get_first_name_to_friend(self, obj):
-        print(self.context['request'].user)
-        print(self.context['request'].user.friends)
-        return obj.first_name
+        request = self.context['request']
+        if obj.friends.filter(friend__id=request.user.id).exists() or request.user.is_staff or obj == request.user:
+            return obj.first_name
+        return None
+
+    def get_last_name_to_friend(self, obj):
+        request = self.context['request']
+        if obj.friends.filter(friend__id=request.user.id).exists() or request.user.is_staff or obj == request.user:
+            return obj.first_name
+        return None
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -34,13 +42,19 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         q = self.queryset
+        pk = None
         if 'pk' in self.kwargs:
             pk = self.kwargs['pk']
-            return q.filter((Q(friendship__friend=self.request.user) | Q(pk=self.request.user.pk)) & Q(pk=pk)).distinct()
+            q = q.filter(pk=pk)
+        print q
         username = self.request.query_params.get('username')
         if username:
-            return q.filter(username=username)
-        return q.filter(pk=self.request.user.pk)
+            q = q.filter(username=username)
+        if not (pk or username):
+            q = q.filter(pk=self.request.user.pk)
+        return q
+        #     return q.filter(username=username)
+        # return q.filter(pk=self.request.user.pk)
 
 
 router.register('users', UserViewSet)

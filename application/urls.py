@@ -19,6 +19,7 @@ from django.conf import settings
 from .api import router
 from core.views import home
 from django.contrib.auth.decorators import login_required
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -28,6 +29,10 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^$', login_required(home), name='home'),
 ]
+
+if __debug__ :
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 if settings.DEBUG:
     import debug_toolbar
