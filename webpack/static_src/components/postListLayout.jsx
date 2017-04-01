@@ -17,7 +17,6 @@ export default class PostListLayoutComponent extends Component {
   };
 
   onCreate = (post) => {
-    console.log(post);
     const postComponent =
       <PostComponent
         user={this.state.user}
@@ -59,7 +58,6 @@ export default class PostListLayoutComponent extends Component {
                 date={post.created}
               />,
           );
-            console.log(list);
             this.setState({
               postList: list,
               isLoading: false,

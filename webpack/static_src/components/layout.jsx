@@ -16,6 +16,7 @@ class LayoutComponent extends Component {
       last_name: '',
       avatar: null,
     },
+    currentPageName: 'news',
   };
 
   componentDidMount() {
@@ -38,23 +39,30 @@ class LayoutComponent extends Component {
     });
   };
 
+  onMenuSelect = (currentMenu) => {
+    this.setState({
+      currentPageName: currentMenu,
+    });
+  };
+
   render() {
+    let page = null;
+    switch (this.state.currentPageName) {
+      case 'news': page = <PostListLayoutComponent />;
+        break;
+      case 'mypage': console.log('mypage');
+        break;
+      default:
+        page = <PostListLayoutComponent />;
+    }
+
     return (
       <div>
         <NavbarTop user={this.state.user} />
         <Grid fluid>
-          <NavbarLeft />
+          <NavbarLeft onSelect={this.onMenuSelect}/>
           <Col xs={12} md={8}>
-            {/* <PostFormComponent
-              onCreate={this.onCreate}
-              username={this.state.user.username}
-              avatar={this.state.user.avatar}
-            />
-            <PostListComponent
-              isLoading={this.state.isLoading}
-              postList={this.state.postList}
-            /> */}
-            { this.props.children }
+            { page }
           </Col>
         </Grid>
       </div>
