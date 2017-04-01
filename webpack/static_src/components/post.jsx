@@ -4,13 +4,12 @@ import Avatar from 'material-ui/Avatar';
 
 class PostComponent extends Component {
   state = {
-    author: '',
     user: {
       pk: 0,
       username: '',
       first_name: '',
       last_name: '',
-      avatar: '../static/ava.jpg',
+      avatar: '../media/avatars/SH.jpg',
     },
     date: '',
     content_object: '',
@@ -18,16 +17,26 @@ class PostComponent extends Component {
   };
 
   componentDidMount() {
-    fetch(this.props.content_object,
-      {
-        method: 'GET',
-        credentials: 'same-origin',
-      })
-    .then(promise => promise.json())
-    .then((json) => {
+    if (this.props.content_object) {
+      fetch(this.props.content_object,
+        {
+          method: 'GET',
+          credentials: 'same-origin',
+        })
+          .then(promise => promise.json())
+          .then((json) => {
+            this.setState({
+              content: json.content,
+            });
+          });
+    } else {
       this.setState({
-        content: json.content,
+        content: this.props.content,
       });
+    }
+    this.setState({
+      date: this.props.date,
+      title: this.props.title,
     });
 
     fetch(this.props.author,
@@ -45,24 +54,32 @@ class PostComponent extends Component {
 
   render() {
     return (
-      <Row>
-        <Panel
-          header=<div><Avatar src={this.state.user.avatar} size={30} /> {this.props.title}</div>
-          footer={this.props.date}
-          bsStyle="info"
-        >
-          {this.state.content}
-        </Panel>
-      </Row>
-    );
+      <div>
+        <Row>
+          <Panel
+            header=<div><Avatar src={this.state.user.avatar} size={30} /> {this.state.title}</div>
+            footer={this.state.date}
+            bsStyle="info"
+          >
+            {this.state.content}
+          </Panel>
+        </Row>
+      </div>
+    )
   }
 }
 
 PostComponent.propTypes = {
   author: React.PropTypes.string.isRequired,
   date: React.PropTypes.string.isRequired,
-  content_object: React.PropTypes.string.isRequired,
+  content: React.PropTypes.string,
+  content_object: React.PropTypes.string,
   title: React.PropTypes.string.isRequired,
+};
+
+PostComponent.defaultProp = {
+  content: '',
+  content_object: '',
 };
 
 export default PostComponent;

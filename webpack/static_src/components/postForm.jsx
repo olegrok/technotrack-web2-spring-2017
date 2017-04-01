@@ -9,10 +9,9 @@ class PostFormComponent extends Component {
   onCreate = (e) => {
     e.preventDefault();
     this.props.onCreate({
-      author: {
-        username: this.props.username,
-        avatarUrl: this.props.avatar,
-      },
+      user: this.props.user,
+      date: new Date().toString(),
+      title: this.props.user.username + ' написал пост',
       ...this.state,
     });
     this.setState({
@@ -56,8 +55,11 @@ class PostFormComponent extends Component {
 
 PostFormComponent.propTypes = {
   onCreate: React.PropTypes.func.isRequired,
-  username: React.PropTypes.string.isRequired,
-  avatar: React.PropTypes.string.isRequired,
+  user: React.PropTypes.shape({
+    pk: React.propTypes.number,
+    username: React.PropTypes.string,
+    avatar: React.PropTypes.string,
+  }).isRequired,
 };
 
 export default PostFormComponent;

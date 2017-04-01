@@ -46,7 +46,6 @@ class UserViewSet(viewsets.ModelViewSet):
         if 'pk' in self.kwargs:
             pk = self.kwargs['pk']
             q = q.filter(pk=pk)
-        print q
         username = self.request.query_params.get('username')
         if username:
             q = q.filter(username=username)
