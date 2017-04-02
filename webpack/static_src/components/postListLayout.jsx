@@ -30,10 +30,13 @@ export default class PostListLayoutComponent extends Component {
   };
 
   componentDidMount() {
-    fetch('http://localhost:8080/api/users/?format=json',
+    fetch('http://localhost:8080/api/users/',
       {
         method: 'GET',
         credentials: 'same-origin',
+        body: {
+          format: 'json',
+        },
       })
       .then(promise => promise.json())
       .then((json) => {
@@ -41,11 +44,13 @@ export default class PostListLayoutComponent extends Component {
           user: json[0],
         });
       });
-
-    fetch('http://localhost:8080/api/events/?format=json',
+    fetch('http://localhost:8080/api/events/',
       {
         method: 'GET',
         credentials: 'same-origin',
+        body: {
+          format: 'json',
+        },
       })
       .then(promise => promise.json())
       .then((json) => {

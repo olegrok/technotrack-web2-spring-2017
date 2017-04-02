@@ -7,16 +7,29 @@ from .permissions import IsOwnerOrReadOnly
 from django.db.models import Q
 from application.settings import AUTH_USER_MODEL
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.renderers import JSONRenderer
 
 
 class ChatSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.id')
     # messages = MessageSerializer(many=True)
+    last_message = serializers.SerializerMethodField('get_message')
 
     class Meta:
         model = Chat
-        fields = ['pk', 'title', 'author', 'created', ]
+        fields = ['pk', 'title', 'author', 'created', 'last_message']
         depth = 1
+
+    def get_message(self, obj):
+        last_message = obj.messages.all().order_by('-created')[0]
+        avatar = None
+        if last_message.author.avatar:
+            avatar = last_message.author.avatar.url
+        return {
+            'author': last_message.author.username,
+            'avatar': avatar,
+            'content': last_message.content,
+        }
 
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):

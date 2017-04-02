@@ -8,6 +8,7 @@ import NavbarLeft from './navbarLeft';
 import PostListLayoutComponent from './postListLayout';
 import FriendListLayout from './friendList';
 import UserPage from './userPage';
+import ChatsListComponent from './chatsList';
 
 class LayoutComponent extends Component {
   state = {
@@ -55,6 +56,8 @@ class LayoutComponent extends Component {
       case 'mypage': page = <UserPage user={this.state.user} />;
         break;
       case 'friends': page = <FriendListLayout />;
+        break;
+      case 'chats': page = <ChatsListComponent />;
         break;
       default:
         page = <PostListLayoutComponent />;

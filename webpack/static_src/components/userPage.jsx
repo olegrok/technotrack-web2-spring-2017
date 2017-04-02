@@ -69,7 +69,7 @@ export default class UserPage extends Component {
 
 UserPage.propTypes = {
   user: React.PropTypes.shape({
-    pk: React.propTypes.number,
+    pk: React.PropTypes.number,
     username: React.PropTypes.string,
     avatar: React.PropTypes.string,
     first_name: React.PropTypes.string,
