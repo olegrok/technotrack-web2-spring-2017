@@ -31,7 +31,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     def get_last_name_to_friend(self, obj):
         request = self.context['request']
         if obj.friends.filter(friend__id=request.user.id).exists() or request.user.is_staff or obj == request.user:
-            return obj.first_name
+            return obj.last_name
         return None
 
 
@@ -43,13 +43,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         q = self.queryset
         pk = None
+        username = self.request.query_params.get('username')
         if 'pk' in self.kwargs:
             pk = self.kwargs['pk']
             q = q.filter(pk=pk)
-        username = self.request.query_params.get('username')
-        if username:
+        elif username:
             q = q.filter(username=username)
-        if not (pk or username):
+        else:
             q = q.filter(pk=self.request.user.pk)
         return q
         #     return q.filter(username=username)

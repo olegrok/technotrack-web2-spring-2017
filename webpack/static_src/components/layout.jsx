@@ -6,6 +6,8 @@ import '../styles/bootstrap-3/css/bootstrap.css';
 import NavbarTop from './navbarTop';
 import NavbarLeft from './navbarLeft';
 import PostListLayoutComponent from './postListLayout';
+import FriendListLayout from './friendList';
+import UserPage from './userPage';
 
 class LayoutComponent extends Component {
   state = {
@@ -50,7 +52,9 @@ class LayoutComponent extends Component {
     switch (this.state.currentPageName) {
       case 'news': page = <PostListLayoutComponent />;
         break;
-      case 'mypage': console.log('mypage');
+      case 'mypage': page = <UserPage user={this.state.user} />;
+        break;
+      case 'friends': page = <FriendListLayout />;
         break;
       default:
         page = <PostListLayoutComponent />;
@@ -60,7 +64,7 @@ class LayoutComponent extends Component {
       <div>
         <NavbarTop user={this.state.user} />
         <Grid fluid>
-          <NavbarLeft onSelect={this.onMenuSelect}/>
+          <NavbarLeft onSelect={this.onMenuSelect} />
           <Col xs={12} md={8}>
             { page }
           </Col>

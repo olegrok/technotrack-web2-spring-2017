@@ -3,7 +3,7 @@ import { Col, Nav, NavItem } from 'react-bootstrap';
 
 class NavbarLeft extends Component {
   state = {
-    currentPageName: 'mypage',
+    currentPageName: 'news',
   };
 
   onSelect = (eventKey) => {

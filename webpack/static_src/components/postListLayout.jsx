@@ -47,22 +47,22 @@ export default class PostListLayoutComponent extends Component {
         method: 'GET',
         credentials: 'same-origin',
       })
-          .then(promise => promise.json())
-          .then((json) => {
-            const list = json.map(
-              post => <PostComponent
-                key={post.id}
-                author={post.author}
-                title={post.title}
-                content_object={post.content_object}
-                date={post.created}
-              />,
-          );
-            this.setState({
-              postList: list,
-              isLoading: false,
-            });
-          });
+      .then(promise => promise.json())
+      .then((json) => {
+        const list = json.map(
+          post => <PostComponent
+            key={post.id}
+            author={post.author}
+            title={post.title}
+            content_object={post.content_object}
+            date={post.created}
+          />,
+      );
+        this.setState({
+          postList: list,
+          isLoading: false,
+        });
+      });
   }
 
   render() {
@@ -80,4 +80,3 @@ export default class PostListLayoutComponent extends Component {
     );
   }
 }
-

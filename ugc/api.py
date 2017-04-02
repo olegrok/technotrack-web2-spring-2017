@@ -11,7 +11,6 @@ from django.db.models import Q
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
-    author = UserSerializer(read_only=True)
     # likes = LikeSerializer(many=True, read_only=True)
     likes_count = serializers.IntegerField(source='likes.count', read_only=True)
     created = serializers.DateTimeField(read_only=True, format='%X %d %b %Y')
@@ -19,7 +18,6 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
         fields = ('pk', 'content', 'author', 'created', 'likes_count')
-        depth = 1
 
 
 class PostViewSet(viewsets.ModelViewSet):
