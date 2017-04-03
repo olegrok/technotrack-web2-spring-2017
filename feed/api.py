@@ -80,7 +80,7 @@ class UserEventViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated, ReadOnly)
 
     def get_queryset(self):
-        q = self.queryset.order_by('-created')
+        q = self.queryset.order_by('-created').prefetch_related('author', 'content_object')
         username = self.request.query_params.get('username')
         if username and username != self.request.user.username:
             q = q.filter(Q(author__username=username) & Q(author__friendship__friend=self.request.user))

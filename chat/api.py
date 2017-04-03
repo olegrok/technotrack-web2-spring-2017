@@ -5,9 +5,7 @@ from core.models import User
 from core.api import UserSerializer
 from .permissions import IsOwnerOrReadOnly
 from django.db.models import Q
-from application.settings import AUTH_USER_MODEL
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.renderers import JSONRenderer
 
 
 class ChatSerializer(serializers.ModelSerializer):
@@ -109,7 +107,7 @@ class MessageViewSet(viewsets.ModelViewSet):
         chat_id = self.request.query_params.get('chat')
         if chat_id:
             q = q.filter(chat__id=chat_id)
-        return q
+        return q.prefetch_related('chat')
 
     # def get_serializer_context(self):
     #     context = super(MessageViewSet, self).get_serializer_context()

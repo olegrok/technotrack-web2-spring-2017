@@ -9,6 +9,7 @@ import PostListLayoutComponent from './postListLayout';
 import FriendListLayout from './friendList';
 import UserPage from './userPage';
 import ChatsListComponent from './chatsList';
+import PeopleSearchComponent from './peopleSearch';
 
 class LayoutComponent extends Component {
   state = {
@@ -58,6 +59,8 @@ class LayoutComponent extends Component {
       case 'friends': page = <FriendListLayout />;
         break;
       case 'chats': page = <ChatsListComponent />;
+        break;
+      case 'people': page = <PeopleSearchComponent />;
         break;
       default:
         page = <PostListLayoutComponent />;
