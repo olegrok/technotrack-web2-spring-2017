@@ -1,64 +1,15 @@
 import React, { Component } from 'react';
 import { Panel, Row } from 'react-bootstrap';
 import Avatar from 'material-ui/Avatar';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import ModalComponent from './modal';
 
 class PostComponent extends Component {
   state = {
-    user: {
-      pk: 0,
-      username: '',
-      first_name: '',
-      last_name: '',
-      avatar: '../media/avatars/SH.jpg',
-    },
-    date: '',
-    content_object: '',
-    title: '',
     showModal: false,
   };
-
-  componentDidMount() {
-    if (this.props.content_object) {
-      fetch(this.props.content_object,
-        {
-          method: 'GET',
-          credentials: 'same-origin',
-        })
-          .then(promise => promise.json())
-          .then((json) => {
-            this.setState({
-              content: json.content,
-            });
-          });
-    } else {
-      this.setState({
-        content: this.props.content,
-      });
-    }
-    this.setState({
-      date: this.props.date,
-      title: this.props.title,
-    });
-
-    if (this.props.author) {
-      fetch(this.props.author,
-        {
-          method: 'GET',
-          credentials: 'same-origin',
-        })
-      .then(promise => promise.json())
-      .then((json) => {
-        this.setState({
-          user: json,
-        });
-      });
-    } else {
-      this.setState({
-        user: this.props.user,
-      });
-    }
-  }
 
   showModal = (op) => {
     this.setState({
@@ -68,26 +19,26 @@ class PostComponent extends Component {
 
   render() {
     let headerTag = null;
-    if (this.state.title) {
-      headerTag = <div><Avatar src={this.state.user.avatar} size={30} /> {this.state.title}</div>;
+    if (this.props.title) {
+      headerTag = <div><Avatar src={this.props.author.avatar} size={30} /> {this.props.title}</div>;
     }
     return (
       <div>
         <ModalComponent
           showModal={this.state.showModal}
           onClickShow={this.showModal}
-          user={this.state.user}
-          content={this.state.content}
-          date={this.state.date}
+          user={this.props.author}
+          content={this.props.content}
+          date={this.props.date}
         />
         <Row>
           <Panel
             onDoubleClick={() => this.showModal(true)}
             header={headerTag}
-            footer={this.state.date}
+            footer={this.props.date}
             bsStyle="info"
           >
-            {this.state.content}
+            {this.props.content}
           </Panel>
         </Row>
       </div>
@@ -95,32 +46,24 @@ class PostComponent extends Component {
   }
 }
 
-PostComponent.defaultProps = {
-  content: '',
-  content_object: '',
-  author: '',
-  user: {
-    pk: 0,
-    username: '',
-    first_name: '',
-    last_name: '',
-    avatar: '../media/avatars/SH.jpg',
-  },
-  title: '',
-};
-
 PostComponent.propTypes = {
-  author: React.PropTypes.string,
-  user: React.PropTypes.shape({
-    pk: React.PropTypes.number,
-    username: React.PropTypes.string,
-    avatar: React.PropTypes.string,
-  }),
-  date: React.PropTypes.string.isRequired,
-  content: React.PropTypes.string,
-  content_object: React.PropTypes.string,
-  title: React.PropTypes.string,
+  id: React.PropTypes.number.isRequired,
 };
 
+const mapStateToProps = (state, props) => ({
+  author: state.users[state.posts.posts[props.id].author],
+  content: state.posts.posts[props.id].content_object.content,
+  date: state.posts.posts[props.id].created,
+  title: state.posts.posts[props.id].title,
+  content_object: state.posts.posts[props.id].content_object,
+});
 
-export default PostComponent;
+const mapDispatchToProps = distpatch => ({
+  ...bindActionCreators({
+  }, distpatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PostComponent);

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import FriendComponent from './friend';
 
@@ -8,7 +10,7 @@ const FRIENDS = [
     { id: 3, username: 'AAAA', first_name: 'FN', last_name: 'LN', avatar: '/' },
 ];
 
-export default class FriendshipRequestsComponent extends Component {
+class FriendshipRequestsComponent extends Component {
 
   state = {
     friendshipRequestsList: [],
@@ -17,13 +19,13 @@ export default class FriendshipRequestsComponent extends Component {
 
   componentDidMount() {
     const requests = FRIENDS.map(
-        request => <FriendComponent
+        request => (<FriendComponent
           bsStyle="info"
           key={request.id}
           username={request.username}
           first_name={request.first_name}
           last_name={request.last_name}
-        />,
+        />),
       );
     this.setState({
       friendshipRequestsList: requests,
@@ -49,3 +51,17 @@ FriendshipRequestsComponent.propTypes = {
     // friendshipRequestsList: React.PropTypes.arrayOf(React.PropTypes.element).isRequired,
   isLoading: React.PropTypes.bool,
 };
+
+const mapStateToProps = state => ({
+  // postList: state.posts.postList,
+});
+
+const mapDispatchToProps = distpatch => ({
+  ...bindActionCreators({
+  }, distpatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FriendshipRequestsComponent);

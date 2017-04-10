@@ -7,7 +7,7 @@ export default class FriendListLayout extends Component {
   render() {
     return (
       <ListGroup>
-        <FriendshipRequestComponents />
+        {/* <FriendshipRequestComponents /> */}
         <FriendsComponent />
       </ListGroup>
     );

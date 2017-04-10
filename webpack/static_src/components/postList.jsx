@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import CircularProgress from 'material-ui/CircularProgress';
 
 class PostListComponent extends Component {
+
   render() {
     return (
       <div> { this.props.isLoading ?
@@ -11,13 +14,17 @@ class PostListComponent extends Component {
     );
   }
 }
-PostListComponent.defaultProps = {
-  isLoading: true,
-};
 
-PostListComponent.propTypes = {
-  postList: React.PropTypes.arrayOf(React.PropTypes.element).isRequired,
-  isLoading: React.PropTypes.bool,
-};
+const mapStateToProps = state => ({
+  postList: state.posts.postList,
+});
 
-export default PostListComponent;
+const mapDispatchToProps = distpatch => ({
+  ...bindActionCreators({
+  }, distpatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PostListComponent);

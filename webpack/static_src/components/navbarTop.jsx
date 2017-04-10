@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import Avatar from 'material-ui/Avatar';
 
@@ -25,9 +27,8 @@ class NavbarTop extends Component {
             </NavDropdown>
           </Nav>
           <Nav pullRight>
-            <NavItem eventKey={1} href="#">{this.props.user.username}</NavItem>
-            {/* <NavItem eventKey={2} href="#"></NavItem> */}
-            <Avatar src={this.props.user.avatar} size={50} />
+            <NavItem eventKey={1} href="#">{this.props.profile.username}</NavItem>
+            <Avatar src={this.props.profile.avatar} size={50} />
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -35,15 +36,17 @@ class NavbarTop extends Component {
   }
 }
 
-NavbarTop.propTypes = {
-  user: React.PropTypes.shape({
-    pk: React.propTypes.number,
-    username: React.PropTypes.string,
-    avatar: React.PropTypes.string,
-    first_name: React.PropTypes.string,
-    last_name: React.PropTypes.string,
-  }).isRequired,
-};
 
+const mapStateToProps = state => ({
+  profile: state.layout.account,
+});
 
-export default NavbarTop;
+const mapDispatchToProps = distpatch => ({
+  ...bindActionCreators({
+  }, distpatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NavbarTop);

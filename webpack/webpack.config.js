@@ -5,11 +5,14 @@ const path = require('path');
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 module.exports = {
+  context: path.resolve(__dirname, './static_src'),
+  devtool: NODE_ENV === 'development'
+      ? 'cheap-module-eval-source-map'
+      : 'cheap-module-source-map',
   entry: {
     testBundle: './test',
     indexBundle: './index',
   },
-  context: path.resolve(__dirname, './static_src'),
   output: {
     filename: '[name]-[hash].js',
     path: path.resolve(path.dirname(__dirname), './static'),
@@ -69,8 +72,4 @@ module.exports = {
     }),
     new BundleTracker({ filename: './webpack-stats.json' }),
   ],
-
-  devtool: NODE_ENV === 'development'
-      ? 'inline-source-map'
-      : 'cheap-module-inline-source-map',
 };
