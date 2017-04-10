@@ -8,10 +8,11 @@ export function loadFriends() {
   };
 }
 
-export function loadFriendsSuccess(friends) {
+export function loadFriendsSuccess(friends, type) {
   return {
     type: LOAD_FRIENDS_SUCCESS,
     friends,
+    friendshipType: type,
   };
 }
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Panel, Row } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import Avatar from 'material-ui/Avatar';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -27,9 +28,7 @@ class PostComponent extends Component {
         <ModalComponent
           showModal={this.state.showModal}
           onClickShow={this.showModal}
-          user={this.props.author}
-          content={this.props.content}
-          date={this.props.date}
+          id={this.props.id}
         />
         <Row>
           <Panel
@@ -47,7 +46,7 @@ class PostComponent extends Component {
 }
 
 PostComponent.propTypes = {
-  id: React.PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state, props) => ({

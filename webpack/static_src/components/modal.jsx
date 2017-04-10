@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Avatar from 'material-ui/Avatar';
 
-export default class ModalComponent extends Component {
+class ModalComponent extends Component {
   close = () => {
     this.props.onClickShow(false);
   }
 
   render() {
+    let content;
+    if (this.props.post.content_object.content) {
+      content = this.props.post.content_object.content;
+    } else {
+      content = this.props.post.title;
+    }
     return (
       <div>
         <Modal show={this.props.showModal} onHide={this.close}>
@@ -18,10 +27,10 @@ export default class ModalComponent extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {this.props.content}
+            {content}
           </Modal.Body>
           <Modal.Footer>
-            {this.props.date}
+            {this.props.post.created}
             {/* <Button onClick={this.close}>X</Button> */}
           </Modal.Footer>
         </Modal>
@@ -31,13 +40,22 @@ export default class ModalComponent extends Component {
 }
 
 ModalComponent.propTypes = {
-  user: React.PropTypes.shape({
-    pk: React.PropTypes.number,
-    username: React.PropTypes.string,
-    avatar: React.PropTypes.string,
-  }),
-  date: React.PropTypes.string.isRequired,
-  content: React.PropTypes.string.isRequired,
-  showModal: React.PropTypes.boolean.isRequired,
-  onClickShow: React.PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
+  showModal: PropTypes.boolean.isRequired,
+  onClickShow: PropTypes.func.isRequired,
 }
+
+const mapStateToProps = (state, props) => ({
+  post: state.posts.posts[props.id],
+  user: state.users[state.posts.posts[props.id].author],
+});
+
+const mapDispatchToProps = distpatch => ({
+  ...bindActionCreators({
+  }, distpatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ModalComponent);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Form, FormControl, Row, Panel } from 'react-bootstrap';
 
 class PostFormComponent extends Component {
@@ -54,11 +55,11 @@ class PostFormComponent extends Component {
 }
 
 PostFormComponent.propTypes = {
-  onCreate: React.PropTypes.func.isRequired,
-  user: React.PropTypes.shape({
-    pk: React.propTypes.number,
-    username: React.PropTypes.string,
-    avatar: React.PropTypes.string,
+  onCreate: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    pk: PropTypes.number,
+    username: PropTypes.string,
+    avatar: PropTypes.string,
   }).isRequired,
 };
 

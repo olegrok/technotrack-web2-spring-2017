@@ -1,7 +1,7 @@
 import update from 'react-addons-update';
 import React from 'react';
 import { LOAD_FRIENDS, LOAD_FRIENDS_SUCCESS, LOAD_FRIENDS_FAIL } from '../actions/friendship';
-import FriendComponent from '../components/friend';
+import FriendComponent, { FRIENDSHIPS, FRIENDSHIP_REQUESTS, FRIENDSHIP_WAITINGS } from '../components/friend';
 
 const initialState = {
   isLoading: false,
@@ -16,11 +16,27 @@ export default function friendship(store = initialState, action) {
       return update(store, { isLoading: { $set: true } });
     case LOAD_FRIENDS_SUCCESS:
       const friends = action.friends.map(
-            friend => (<FriendComponent key={friend} id={friend} bsStyle="" />),
+            friend => (<FriendComponent key={friend} id={friend} type={action.friendshipType} />),
           );
-      return update(store, {
+
+      let bufStore;
+      console.log(action.friendshipType);
+      switch (action.friendshipType) {
+        case FRIENDSHIPS:
+          bufStore = update(store, { friendsList: { $merge: friends } });
+          break;
+        case FRIENDSHIP_REQUESTS:
+          bufStore = update(store, { friendshipRequestList: { $merge: friends } });
+          break;
+        case FRIENDSHIP_WAITINGS:
+          bufStore = update(store, { friendshipWaitList: { $merge: friends } });
+          break;
+        default:
+          bufStore = update(store, { friendsList: { $merge: friends } });
+      }
+
+      return update(bufStore, {
         isLoading: { $set: false },
-        friendsList: { $merge: friends },
       });
     case LOAD_FRIENDS_FAIL:
       return update(store, { isLoading: { $set: false } });

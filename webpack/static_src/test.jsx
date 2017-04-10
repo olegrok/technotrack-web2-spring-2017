@@ -11,18 +11,6 @@ import PostListLayoutComponent from './components/postListLayout';
 import initStore from './store';
 
 class Page extends Component {
-  state = {
-    postList: [],
-    isLoading: true,
-    user: {
-      pk: 0,
-      username: '',
-      first_name: '',
-      last_name: '',
-      avatar: null,
-    },
-  };
-
   render() {
     return (
       <MuiThemeProvider>

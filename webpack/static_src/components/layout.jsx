@@ -33,10 +33,6 @@ class LayoutComponent extends Component {
     });
   };
 
-  // onMenuSelect = (currentMenu) => {
-  //   this.props.selectPage(currentMenu);
-  // };
-
   render() {
     let page = null;
     switch (this.props.currentPage) {
@@ -69,7 +65,7 @@ class LayoutComponent extends Component {
 }
 
 // LayoutComponent.propTypes = {
-//   onSelect: React.PropTypes.func.isRequired,
+//   onSelect: PropTypes.func.isRequired,
 // };
 
 const mapStateToProps = state => ({

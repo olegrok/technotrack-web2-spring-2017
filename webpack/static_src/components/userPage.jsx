@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Media, Well } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import PostComponent from './post';
 import PostListComponent from './postList';
 
@@ -19,12 +20,12 @@ export default class UserPage extends Component {
       .then(promise => promise.json())
       .then((json) => {
         const list = json.map(
-          post => <PostComponent
+          post => (<PostComponent
             key={post.id}
             user={this.props.user}
             content={post.content}
             date={post.created}
-          />,
+          />),
       );
         this.setState({
           postList: list,
@@ -68,11 +69,11 @@ export default class UserPage extends Component {
 }
 
 UserPage.propTypes = {
-  user: React.PropTypes.shape({
-    pk: React.PropTypes.number,
-    username: React.PropTypes.string,
-    avatar: React.PropTypes.string,
-    first_name: React.PropTypes.string,
-    last_name: React.PropTypes.string,
+  user: PropTypes.shape({
+    pk: PropTypes.number,
+    username: PropTypes.string,
+    avatar: PropTypes.string,
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
   }).isRequired,
 };

@@ -28,6 +28,7 @@ const func = store => next => (action) => {
       store.dispatch(addUser(normalized.entities.users));
       return next(loadFriendsSuccess(
         normalized.result,
+        action.friendshipType,
       ));
     default:
       return next(action);
