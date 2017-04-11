@@ -6,6 +6,9 @@ from core.api import UserSerializer
 
 
 class FriendshipRequestSerializer(serializers.ModelSerializer):
+    initiator = UserSerializer(read_only=True)
+    recipient = UserSerializer()
+
     class Meta:
         model = FriendshipRequest
         fields = ('initiator', 'recipient', 'approved',)
@@ -22,10 +25,24 @@ class FriendshipRequestViewSet(viewsets.ModelViewSet):
         serializer.save(initiator=self.request.user, approved=False)
 
     def get_queryset(self):
-        q = super(FriendshipRequestViewSet, self).get_queryset()
-        if self.request.query_params.get('username', None):
-            username = self.request.query_params.get('username')
-            q = q.filter(Q(initiator__username=username) | Q(recipient__username=username))
+        q = self.queryset
+        user = self.request.user
+        status = self.request.query_params.get('status')
+        if status == 'requested':
+            q = q.filter(recipient=user, approved=False)
+        elif status == 'waiting':
+            q = q.filter(initiator=user, approved=False)
+        else:
+            q = q.filter(Q(initiator=user) | Q(recipient=user))
+
+
+
+
+        # if 'waitings' in self.kwargs:
+
+        # if self.request.query_params.get('username', None):
+        #     username = self.request.query_params.get('username')
+        #     q = q.filter(Q(initiator__username=username) | Q(recipient__username=username))
         return q
 
 

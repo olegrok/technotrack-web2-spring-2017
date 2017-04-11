@@ -20,7 +20,6 @@ export default function friendship(store = initialState, action) {
           );
 
       let bufStore;
-      console.log(action.friendshipType);
       switch (action.friendshipType) {
         case FRIENDSHIPS:
           bufStore = update(store, { friendsList: { $merge: friends } });

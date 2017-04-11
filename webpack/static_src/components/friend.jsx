@@ -42,8 +42,6 @@ class FriendComponent extends Component {
         bsStyle = '';
     }
 
-    console.log(bsStyle);
-
     return (
       <ListGroupItem bsStyle={bsStyle}>
         <Media>

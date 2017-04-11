@@ -7,10 +7,9 @@ import { loadFriends, loadFriendsSuccess, loadFriendsFail } from '../actions/fri
 import { FRIENDSHIPS, FRIENDSHIP_REQUESTS, FRIENDSHIP_WAITINGS } from './friend';
 
 class FriendsComponent extends Component {
-  url = '';
-
   componentDidMount() {
     this.props.loadFriends();
+    console.log(this.field);
     fetch(this.url,
       {
         method: 'GET',
@@ -18,29 +17,33 @@ class FriendsComponent extends Component {
       })
       .then(promise => promise.json())
       .then((json) => {
-        this.props.loadFriendsSuccess(json.map(rec => rec.friend), this.props.type);
+        this.props.loadFriendsSuccess(json.map(rec => rec[this.field]), this.props.type);
       });
   }
+
+  url = '';
+  field = '';
 
   render() {
     let listProps;
     switch (this.props.type) {
-      // todo
       case FRIENDSHIPS:
-        this.url = 'http://localhost:8080/api/friendship/';
+        this.url = '/api/friendship/';
         listProps = this.props.friendsList;
+        this.field = 'friend';
         break;
       case FRIENDSHIP_REQUESTS:
-        this.url = 'http://localhost:8080/api/friendship/';
+        this.url = '/api/friendshiprequests/?format=json&status=requested';
         listProps = this.props.friendshipRequestList;
+        this.field = 'initiator';
         break;
       case FRIENDSHIP_WAITINGS:
-        this.url = 'http://localhost:8080/api/friendship/';
+        this.url = '/api/friendshiprequests/?format=json&status=waiting';
         listProps = this.props.friendshipWaitList;
+        this.field = 'recipient';
         break;
       default:
     }
-
 
     return (
       <div> { this.props.isLoading ?
