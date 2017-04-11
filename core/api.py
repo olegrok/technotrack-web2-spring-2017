@@ -20,14 +20,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ('pk', 'username', 'first_name', 'last_name', 'avatar', 'isFriend')
+        fields = ('id', 'username', 'first_name', 'last_name', 'avatar', 'isFriend')
         depth = 3
 
     def get_first_name_to_friend(self, obj):
         request = self.context['request']
         if obj.friends.filter(friend__id=request.user.id).exists() or request.user.is_staff or obj == request.user:
             return obj.first_name
-        print '123'
         return None
 
     def get_last_name_to_friend(self, obj):

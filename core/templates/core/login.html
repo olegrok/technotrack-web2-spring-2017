@@ -20,9 +20,9 @@
       <form class="form-signin" method="post"> {% csrf_token %}
         <h2 class="form-signin-heading">Авторизация</h2>
         <label class="sr-only">Username</label>
-        {% render_field authform.username|attr:'autofocus' placeholder='Username' class+='form-control' %}
+        {% render_field form.username|attr:'autofocus' placeholder='Username' class+='form-control' %}
         <label class="sr-only">Password</label>
-          {% render_field authform.password placeholder='Password' class+='form-control' %}
+          {% render_field form.password placeholder='Password' class+='form-control' %}
         <input class="btn btn-lg btn-primary btn-block" type="submit" value="Войти">
           <a href="{% url 'core:registration' %}"><input class="btn btn-lg btn-info btn-block" type="button" value="Регистрация"></a>
           <a href="{% url 'social:begin' 'vk-oauth2' %}"><button type="button" class="zocial vk btn btn-block">Использовать VK</button></a>

@@ -1,4 +1,4 @@
-from rest_framework import serializers, viewsets, permissions
+from rest_framework import serializers, viewsets, permissions, fields
 from .models import FriendshipRequest, Friendship
 from application.api import router
 from django.db.models import Q
@@ -31,10 +31,14 @@ class FriendshipRequestViewSet(viewsets.ModelViewSet):
 
 class FriendshipSerializer(serializers.ModelSerializer):
     friend = UserSerializer()
+    content = fields.SerializerMethodField('__null__')
 
     class Meta:
         model = Friendship
-        fields = ['friend', ]
+        fields = ['friend', 'content']
+
+    def __null__(self, obj):
+        return None
 
 
 class FriendshipViewSet(viewsets.ModelViewSet):

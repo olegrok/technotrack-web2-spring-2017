@@ -5,6 +5,8 @@ from django.views.generic.edit import CreateView
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class UserProfileView(DetailView):

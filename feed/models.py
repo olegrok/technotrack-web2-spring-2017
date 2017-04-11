@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.contrib.contenttypes.fields import GenericRelation, ContentType
 from core.models import Authored, Dated, Named, Attached
 
+    
 class Event(Authored, Dated, Named, Attached):
     class Meta:
         verbose_name = u'Событие'

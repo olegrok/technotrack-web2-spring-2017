@@ -1,4 +1,4 @@
-from rest_framework import serializers, viewsets, permissions
+from rest_framework import serializers, viewsets, permissions, fields
 from .models import Event, Achieve
 from application.api import router
 from django.db.models import Q
@@ -20,9 +20,14 @@ class ReadOnly(permissions.BasePermission):
 
 
 class AchieveSerializer(serializers.ModelSerializer):
+    content = fields.SerializerMethodField('__null__')
+
     class Meta:
         model = Achieve
-        fields = ('title', )
+        fields = ('title', 'content')
+
+    def __null__(self, obj):
+        return None
 
 
 class AchieveViewSet(viewsets.ReadOnlyModelViewSet):
@@ -46,11 +51,12 @@ class AchieveViewSet(viewsets.ReadOnlyModelViewSet):
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     content_object = GenericRelatedField({
-        Achieve: serializers.HyperlinkedRelatedField(view_name='achieve-detail', read_only=True),
-        Friendship: serializers.HyperlinkedRelatedField(view_name='friendship-detail', read_only=True),
-        Post: serializers.HyperlinkedRelatedField(read_only=True, view_name='post-detail'),
+        Achieve: AchieveSerializer(read_only=True, allow_null=True),
+        Friendship: FriendshipSerializer(read_only=True, allow_null=True),
+        Post: PostSerializer(read_only=True),
     })
     created = serializers.DateTimeField(read_only=True, format='%X %d %b %Y')
+    author = UserSerializer()
 
     class Meta:
         model = Event
