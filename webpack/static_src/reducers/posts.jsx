@@ -3,7 +3,7 @@ import React from 'react';
 import update from 'react-addons-update';
 import PostComponent from '../components/post';
 
-import { LOAD_POSTS, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAIL } from '../actions/posts';
+import { LOAD_POSTS, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAIL, SHOW_MODAL } from '../actions/posts';
 
 const initialState = {
   posts: {},
@@ -39,6 +39,19 @@ export default function posts(store = initialState, action) {
 
     case LOAD_POSTS_FAIL:
       return update(store, { isLoading: { $set: false } });
+
+    case SHOW_MODAL:
+      return update(store, {
+        posts: {
+          [action.id]: {
+            modal: {
+              $set: action.option,
+            },
+          },
+        },
+      });
+
+
     default:
       return store;
   }

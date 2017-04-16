@@ -38,7 +38,7 @@ class LayoutComponent extends Component {
     switch (this.props.currentPage) {
       case 'news': page = <PostListLayoutComponent />;
         break;
-      case 'mypage': page = <UserPage user={this.props.profile} />;
+      case 'mypage': page = <UserPage id={this.props.profile.id} />;
         break;
       case 'friends': page = <FriendListLayout />;
         break;

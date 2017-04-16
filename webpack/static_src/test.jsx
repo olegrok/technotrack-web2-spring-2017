@@ -15,7 +15,6 @@ class Page extends Component {
     return (
       <MuiThemeProvider>
         <LayoutComponent>
-          <PostListLayoutComponent />
         </LayoutComponent>
       </MuiThemeProvider>
     );

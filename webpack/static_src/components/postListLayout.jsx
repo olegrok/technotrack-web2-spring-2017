@@ -39,6 +39,7 @@ class PostListLayoutComponent extends Component {
       })
       .then(promise => promise.json())
       .then((json) => {
+        // json.forEach((post) => { post.modal = false; });
         this.props.loadPostsSuccess(json);
       });
   }

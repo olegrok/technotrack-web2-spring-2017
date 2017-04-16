@@ -8,8 +8,9 @@ import { FRIENDSHIPS, FRIENDSHIP_REQUESTS, FRIENDSHIP_WAITINGS } from './friend'
 
 class FriendsComponent extends Component {
   componentDidMount() {
-    this.props.loadFriends();
-    console.log(this.field);
+    if (this.props.type === FRIENDSHIPS) {
+      this.props.loadFriends();
+    }
     fetch(this.url,
       {
         method: 'GET',
@@ -46,8 +47,9 @@ class FriendsComponent extends Component {
     }
 
     return (
-      <div> { this.props.isLoading ?
-        <CircularProgress size={60} thickness={7} /> : listProps
+      <div> { this.props.isLoading & this.props.type === FRIENDSHIPS ?
+        <CircularProgress size={60} thickness={7} /> :
+        listProps
       }
       </div>
     );

@@ -4,12 +4,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Avatar from 'material-ui/Avatar';
+import { showModal } from '../actions/posts';
 
 class ModalComponent extends Component {
-  close = () => {
-    this.props.onClickShow(false);
-  }
-
   render() {
     let content;
     if (this.props.post.content_object.content) {
@@ -19,7 +16,7 @@ class ModalComponent extends Component {
     }
     return (
       <div>
-        <Modal show={this.props.showModal} onHide={this.close}>
+        <Modal show={this.props.post.modal} onHide={() => this.props.showModal(this.props.id, false)}>
           <Modal.Header closeButton>
             <Modal.Title>
               <Avatar src={this.props.user.avatar} size={50} />
@@ -41,8 +38,6 @@ class ModalComponent extends Component {
 
 ModalComponent.propTypes = {
   id: PropTypes.number.isRequired,
-  showModal: PropTypes.boolean.isRequired,
-  onClickShow: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state, props) => ({
@@ -52,6 +47,7 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = distpatch => ({
   ...bindActionCreators({
+    showModal,
   }, distpatch),
 });
 

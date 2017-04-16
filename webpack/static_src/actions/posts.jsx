@@ -2,6 +2,7 @@ export const LOAD_POSTS = 'LOAD_POSTS';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
 export const LOAD_POSTS_FAIL = 'LOAD_POSTS_FAIL';
 export const ADD_POSTS = 'ADD_POSTS';
+export const SHOW_MODAL = 'SHOW_MODAL';
 
 export function addPosts(postList) {
   return {
@@ -27,5 +28,13 @@ export function loadPostsSuccess(posts, postIds = []) {
 export function loadPostsFail() {
   return {
     type: LOAD_POSTS_FAIL,
+  };
+}
+
+export function showModal(id, option) {
+  return {
+    type: SHOW_MODAL,
+    id,
+    option,
   };
 }

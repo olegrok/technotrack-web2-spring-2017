@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { Media, Well } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import PostComponent from './post';
 import PostListComponent from './postList';
 
 
-export default class UserPage extends Component {
+class UserPage extends Component {
   state = {
-    postList: [],
+    userPostList: [],
     isLoading: true,
   };
 
@@ -27,8 +29,9 @@ export default class UserPage extends Component {
             date={post.created}
           />),
       );
+
         this.setState({
-          postList: list,
+          userPostList: list,
           isLoading: false,
         });
       });
@@ -60,7 +63,7 @@ export default class UserPage extends Component {
           </Media>
         </Well>
         <PostListComponent
-          postList={this.state.postList}
+          postList={this.state.userPostList}
           isLoading={this.state.isLoading}
         />
       </div>
@@ -69,11 +72,26 @@ export default class UserPage extends Component {
 }
 
 UserPage.propTypes = {
-  user: PropTypes.shape({
-    pk: PropTypes.number,
-    username: PropTypes.string,
-    avatar: PropTypes.string,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-  }).isRequired,
+  id: PropTypes.number.isRequired,
+  // user: PropTypes.shape({
+  //   pk: PropTypes.number,
+  //   username: PropTypes.string,
+  //   avatar: PropTypes.string,
+  //   first_name: PropTypes.string,
+  //   last_name: PropTypes.string,
+  // }).isRequired,
 };
+
+const mapStateToProps = (state, props) => ({
+  user: state.users[props.id],
+});
+
+const mapDispatchToProps = distpatch => ({
+  ...bindActionCreators({
+  }, distpatch),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UserPage);

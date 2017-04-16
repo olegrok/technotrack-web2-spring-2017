@@ -6,18 +6,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import ModalComponent from './modal';
+import { showModal } from '../actions/posts';
 
 class PostComponent extends Component {
-  state = {
-    showModal: false,
-  };
-
-  showModal = (op) => {
-    this.setState({
-      showModal: op,
-    });
-  }
-
   render() {
     let headerTag = null;
     if (this.props.title) {
@@ -26,13 +17,13 @@ class PostComponent extends Component {
     return (
       <div>
         <ModalComponent
-          showModal={this.state.showModal}
+          showModal={this.props.modal}
           onClickShow={this.showModal}
           id={this.props.id}
         />
         <Row>
           <Panel
-            onDoubleClick={() => this.showModal(true)}
+            onDoubleClick={() => this.props.showModal(this.props.id, true)}
             header={headerTag}
             footer={this.props.date}
             bsStyle="info"
@@ -55,10 +46,12 @@ const mapStateToProps = (state, props) => ({
   date: state.posts.posts[props.id].created,
   title: state.posts.posts[props.id].title,
   content_object: state.posts.posts[props.id].content_object,
+  modal: state.posts.posts[props.id].modal,
 });
 
 const mapDispatchToProps = distpatch => ({
   ...bindActionCreators({
+    showModal,
   }, distpatch),
 });
 

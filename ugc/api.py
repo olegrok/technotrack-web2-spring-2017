@@ -14,6 +14,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     # likes = LikeSerializer(many=True, read_only=True)
     likes_count = serializers.IntegerField(source='likes.count', read_only=True)
     created = serializers.DateTimeField(read_only=True, format='%X %d %b %Y')
+    author = UserSerializer()
 
     class Meta:
         model = Post

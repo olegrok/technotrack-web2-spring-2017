@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const path = require('path');
-
+const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 module.exports = {
@@ -70,6 +70,7 @@ module.exports = {
         unsafe: true,
       },
     }),
+    new CleanObsoleteChunks(),
     new BundleTracker({ filename: './webpack-stats.json' }),
   ],
 };

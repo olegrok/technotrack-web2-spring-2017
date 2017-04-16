@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Image } from 'react-bootstrap';
 import Avatar from 'material-ui/Avatar';
 
 class NavbarTop extends Component {
@@ -28,7 +28,9 @@ class NavbarTop extends Component {
           </Nav>
           <Nav pullRight>
             <NavItem eventKey={1} href="#">{this.props.profile.username}</NavItem>
-            <Avatar src={this.props.profile.avatar} size={50} />
+            <NavItem>
+              <Image width={35} height={35} src={this.props.profile.avatar} circle />
+            </NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

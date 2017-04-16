@@ -6,6 +6,7 @@ from core.models import User
 from core.api import UserSerializer
 from friendship.models import Friendship
 from generic_relations.relations import GenericRelatedField
+from django.contrib.contenttypes.models import ContentTypeManager
 
 from friendship.api import FriendshipSerializer
 from ugc.models import Post
@@ -55,14 +56,22 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         Friendship: FriendshipSerializer(read_only=True, allow_null=True),
         Post: PostSerializer(read_only=True),
     })
+    # content_type = fields.CharField(read_only=True)
+    content_type = fields.SerializerMethodField('get_event_type')
+
     created = serializers.DateTimeField(read_only=True, format='%X %d %b %Y')
     author = UserSerializer()
 
     class Meta:
         model = Event
-        fields = ('author', 'created', 'title', 'content_object', 'id')
+        fields = ('id', 'author', 'created', 'title', 'content_object', 'content_type')
         # exclude = ('content_object',)
         depth = 0
+
+    def get_event_type(self, obj):
+        # print(ContentTypeManager().get_for_model(obj), dir(ContentTypeManager().get_for_model(obj)))
+        content_object_name = str(type(obj.content_object)).replace('\'>','').split('.')
+        return content_object_name[len(content_object_name) - 1]
 
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
