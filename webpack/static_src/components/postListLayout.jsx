@@ -5,8 +5,7 @@ import { bindActionCreators } from 'redux';
 import PostFormComponent from './postForm';
 import PostListComponent from './postList';
 import PostComponent from './post';
-import { loadPosts, loadPostsSuccess, loadPostsFail } from '../actions/posts';
-
+import { fetchPosts } from '../actions/posts';
 
 class PostListLayoutComponent extends Component {
   state = {
@@ -16,32 +15,19 @@ class PostListLayoutComponent extends Component {
 
   onCreate = (post) => {
     const postComponent =
-      <PostComponent
+      (<PostComponent
         user={this.props.profile}
         title={post.title}
         date={post.date}
         content={post.content}
-      />;
+      />);
     this.setState({
       postList: [postComponent, ...this.state.postList],
     });
   };
 
   componentDidMount() {
-    this.props.loadPosts();
-    fetch('http://localhost:8080/api/events/',
-      {
-        method: 'GET',
-        credentials: 'same-origin',
-        body: {
-          format: 'json',
-        },
-      })
-      .then(promise => promise.json())
-      .then((json) => {
-        // json.forEach((post) => { post.modal = false; });
-        this.props.loadPostsSuccess(json);
-      });
+    this.props.fetchPosts();
   }
 
   render() {
@@ -69,9 +55,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = distpatch => ({
   ...bindActionCreators({
-    loadPosts,
-    loadPostsSuccess,
-    loadPostsFail,
+    fetchPosts,
   }, distpatch),
 });
 

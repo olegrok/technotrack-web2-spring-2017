@@ -3,23 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CircularProgress from 'material-ui/CircularProgress';
-import { loadFriends, loadFriendsSuccess, loadFriendsFail } from '../actions/friendship';
+import { loadFriends, loadFriendsSuccess, loadFriendsFail, fetchFriends } from '../actions/friendship';
 import { FRIENDSHIPS, FRIENDSHIP_REQUESTS, FRIENDSHIP_WAITINGS } from './friend';
 
 class FriendsComponent extends Component {
   componentDidMount() {
-    if (this.props.type === FRIENDSHIPS) {
-      this.props.loadFriends();
-    }
-    fetch(this.url,
-      {
-        method: 'GET',
-        credentials: 'same-origin',
-      })
-      .then(promise => promise.json())
-      .then((json) => {
-        this.props.loadFriendsSuccess(json.map(rec => rec[this.field]), this.props.type);
-      });
+    this.props.fetchFriends(this.url, this.field, this.props.type);
   }
 
   url = '';
@@ -72,6 +61,7 @@ const mapDispatchToProps = distpatch => ({
     loadFriends,
     loadFriendsSuccess,
     loadFriendsFail,
+    fetchFriends,
   }, distpatch),
 });
 

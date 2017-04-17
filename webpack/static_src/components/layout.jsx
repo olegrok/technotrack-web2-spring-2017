@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { Grid, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Route } from 'react-router';
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 import '../styles/bootstrap-3/css/bootstrap.css';
 import NavbarTop from './navbarTop';
 import NavbarLeft from './navbarLeft';
@@ -13,6 +15,7 @@ import UserPage from './userPage';
 import ChatsListComponent from './chatsList';
 import PeopleSearchComponent from './peopleSearch';
 import { setProfile } from '../actions/account';
+import { history } from '../store';
 
 class LayoutComponent extends Component {
   componentDidMount() {
@@ -35,6 +38,7 @@ class LayoutComponent extends Component {
 
   render() {
     let page = null;
+    const News = <PostListLayoutComponent />;
     switch (this.props.currentPage) {
       case 'news': page = <PostListLayoutComponent />;
         break;

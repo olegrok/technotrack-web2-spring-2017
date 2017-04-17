@@ -38,3 +38,21 @@ export function showModal(id, option) {
     option,
   };
 }
+
+export function fetchPosts() {
+  return function (dispatch) {
+    dispatch(loadPosts());
+    return fetch('http://localhost:8080/api/events/',
+      {
+        method: 'GET',
+        credentials: 'same-origin',
+        body: {
+          format: 'json',
+        },
+      })
+      .then(promise => promise.json())
+      .then((json) => {
+        dispatch(loadPostsSuccess(json));
+      });
+  };
+}
