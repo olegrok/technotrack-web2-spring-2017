@@ -1,4 +1,5 @@
 import { FRIENDSHIPS, FRIENDSHIP_REQUESTS, FRIENDSHIP_WAITINGS } from '../components/friend';
+import { userSchema } from '../schemas';
 
 export const LOAD_FRIENDS = 'LOAD_FRIENDS';
 export const LOAD_FRIENDS_SUCCESS = 'LOAD_FRIENDS_SUCCESS';
@@ -10,11 +11,12 @@ export function loadFriends() {
   };
 }
 
-export function loadFriendsSuccess(friends, type) {
+export function loadFriendsSuccess(friends, type, schema = userSchema) {
   return {
     type: LOAD_FRIENDS_SUCCESS,
-    friends,
+    users: friends,
     friendshipType: type,
+    schema,
   };
 }
 

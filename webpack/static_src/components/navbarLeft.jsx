@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Nav, NavItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { selectPage } from '../actions/routing';
 
@@ -19,19 +20,19 @@ class NavbarLeft extends Component {
       <Col xs={4} md={2}>
         <Nav bsStyle="pills" stacked activeKey={this.props.currentPage}>
           <NavItem onSelect={this.onSelect} eventKey="mypage">
-             Моя страница
+            <Link to="/wall"> Моя страница </Link>
           </NavItem>
           <NavItem onSelect={this.onSelect} eventKey="news">
-            Новости
+            <Link to="/news"> Новости </Link>
           </NavItem>
           <NavItem onSelect={this.onSelect} eventKey="friends">
-            Друзья
+            <Link to="/friends"> Друзья </Link>
           </NavItem>
           <NavItem onSelect={this.onSelect} eventKey="chats">
-            Чаты
+            <Link to="/chats"> Чаты </Link>
           </NavItem>
           <NavItem onSelect={this.onSelect} eventKey="people">
-            Люди
+            <Link to="/people"> Люди </Link>
           </NavItem>
         </Nav>
       </Col>

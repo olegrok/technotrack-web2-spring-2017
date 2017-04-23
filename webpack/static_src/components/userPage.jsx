@@ -3,9 +3,8 @@ import { Media, Well } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import PostComponent from './post';
 import PostListComponent from './postList';
-
+import { fetchUserPosts } from '../actions/userPosts';
 
 class UserPage extends Component {
   state = {
@@ -14,27 +13,7 @@ class UserPage extends Component {
   };
 
   componentDidMount() {
-    fetch('http://localhost:8080/api/posts/?format=json',
-      {
-        method: 'GET',
-        credentials: 'same-origin',
-      })
-      .then(promise => promise.json())
-      .then((json) => {
-        const list = json.map(
-          post => (<PostComponent
-            key={post.id}
-            user={this.props.user}
-            content={post.content}
-            date={post.created}
-          />),
-      );
-
-        this.setState({
-          userPostList: list,
-          isLoading: false,
-        });
-      });
+    this.props.fetchUserPosts(this.props.user.id);
   }
 
   render() {
@@ -63,8 +42,8 @@ class UserPage extends Component {
           </Media>
         </Well>
         <PostListComponent
-          postList={this.state.userPostList}
-          isLoading={this.state.isLoading}
+          postList={this.props.userPostList}
+          isLoading={this.props.isLoading}
         />
       </div>
     );
@@ -73,21 +52,17 @@ class UserPage extends Component {
 
 UserPage.propTypes = {
   id: PropTypes.number.isRequired,
-  // user: PropTypes.shape({
-  //   pk: PropTypes.number,
-  //   username: PropTypes.string,
-  //   avatar: PropTypes.string,
-  //   first_name: PropTypes.string,
-  //   last_name: PropTypes.string,
-  // }).isRequired,
 };
 
 const mapStateToProps = (state, props) => ({
   user: state.users[props.id],
+  userPostList: state.userPosts.userPostList,
+  isLoading: state.userPosts.isLoading,
 });
 
 const mapDispatchToProps = distpatch => ({
   ...bindActionCreators({
+    fetchUserPosts,
   }, distpatch),
 });
 

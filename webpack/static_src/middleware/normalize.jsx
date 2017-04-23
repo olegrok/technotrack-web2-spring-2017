@@ -1,34 +1,27 @@
-import { normalize, schema } from 'normalizr';
+import { normalize } from 'normalizr';
 import { addUser } from '../actions/users';
-import { LOAD_POSTS_SUCCESS, loadPostsSuccess } from '../actions/posts';
-import { LOAD_FRIENDS_SUCCESS, loadFriendsSuccess } from '../actions/friendship';
+import { addPost } from '../actions/posts';
+import { addUserPost } from '../actions/userPosts';
 
-const user = new schema.Entity('users');
-const post = new schema.Entity('posts', {
-  author: user,
-});
-
-const normalizeMiddleware = store => next => (action) => {
+const normalizationMiddleware = store => next => (action) => {
   let normalized = {};
-  switch (action.type) {
-    case LOAD_POSTS_SUCCESS:
-      normalized = normalize(action.posts, [post]);
+  if (action.schema) {
+    normalized = normalize(action[action.schema.key], [action.schema]);
+    action.normalized = true;
+    if (normalized.entities.users) {
       store.dispatch(addUser(normalized.entities.users));
-      return next(loadPostsSuccess(
-        normalized.entities.posts,
-        normalized.result,
-      ));
-
-    case LOAD_FRIENDS_SUCCESS:
-      normalized = normalize(action.friends, [user]);
-      store.dispatch(addUser(normalized.entities.users));
-      return next(loadFriendsSuccess(
-        normalized.result,
-        action.friendshipType,
-      ));
-    default:
-      return next(action);
+    }
+    if (normalized.entities.posts) {
+      store.dispatch(addPost(normalized.entities.posts))
+    }
+    if (normalized.entities.userPosts) {
+      store.dispatch(addUserPost(normalized.entities.userPosts))
+    }
+    action[action.schema.key] = normalized.result;
+    // console.log(action);
   }
+
+  return next(action);
 };
 
-export default normalizeMiddleware;
+export default normalizationMiddleware;

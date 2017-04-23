@@ -1,10 +1,13 @@
+# coding: utf-8
+
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView
-from .models import User
+from django.views.generic import DetailView, UpdateView
+from .models import User, AccountValidation
 from django.views.generic.edit import CreateView
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.db.models import Q
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -67,3 +70,29 @@ class RegisterView(CreateView):
 
     def get_success_url(self):
         return reverse(self.success_url)
+
+
+class AccountValidationView(DetailView):
+    model = AccountValidation
+    template_name = 'core/confirmation.html'
+    context_object_name = 'validator'
+    slug_url_kwarg = 'slug'
+    slug_field = 'uuid'
+    query_pk_and_slug = True
+
+    def dispatch(self, request, *args, **kwargs):
+        print 'dispatch'
+        return super(AccountValidationView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        print 'get_context_data'
+        context = super(AccountValidationView, self).get_context_data(**kwargs)
+        print context
+        object = context.get('object')
+        if object and not object.confirmed:
+            context['Message'] = u'Подтверждено'
+        else:
+            context['validator'] = None
+        return context
+
+

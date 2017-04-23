@@ -10,7 +10,6 @@ import { fetchPosts } from '../actions/posts';
 class PostListLayoutComponent extends Component {
   state = {
     postList: [],
-    isLoading: true,
   };
 
   onCreate = (post) => {
@@ -47,10 +46,9 @@ class PostListLayoutComponent extends Component {
 }
 
 const mapStateToProps = state => ({
-  postIds: state.posts.postIds,
   isLoading: state.posts.isLoading,
   profile: state.layout.account,
-  postList: state.layout.postList,
+  postList: state.posts.postList,
 });
 
 const mapDispatchToProps = distpatch => ({

@@ -10,7 +10,6 @@ module.exports = {
       ? 'cheap-module-eval-source-map'
       : 'cheap-module-source-map',
   entry: {
-    testBundle: './test',
     indexBundle: './index',
   },
   output: {

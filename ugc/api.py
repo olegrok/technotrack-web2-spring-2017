@@ -18,7 +18,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('pk', 'content', 'author', 'created', 'likes_count')
+        fields = ('id', 'content', 'author', 'created', 'likes_count')
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -32,13 +32,17 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         q = self.queryset
+        author = self.request.query_params.get('author')
         if 'pk' in self.kwargs:
             pk = self.kwargs['pk']
             return q.filter((Q(author__friendship__friend=self.request.user) | Q(author=self.request.user)) & Q(pk=pk))\
                 .distinct()
-        username = self.request.query_params.get('username')
-        if username != self.request.user.username and username is not None:
-            q = q.filter(Q(author__friendship__friend=self.request.user) & Q(author__username=username))
+
+        if author and not author.isnumeric():
+            return Post.objects.none()
+
+        if author and int(author) != self.request.user.pk:
+            q = q.filter(Q(author__friendship__friend=self.request.user) & Q(author__pk=author))
         else:
             q = q.filter(author=self.request.user)
         return q

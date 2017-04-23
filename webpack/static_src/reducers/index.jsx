@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { routerReducer } from 'react-router-redux';
 import router from './router';
 import layout from './layout';
 import posts from './posts';
 import users from './users';
 import friendship from './friendship';
+import userPosts from './userPosts';
+
 
 export default combineReducers({
   router,
@@ -13,4 +15,5 @@ export default combineReducers({
   posts,
   users,
   friendship,
+  userPosts,
 });

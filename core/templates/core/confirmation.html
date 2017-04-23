@@ -1,0 +1,30 @@
+{% load staticfiles %}
+{% load widget_tweaks  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'signin.css' %} ">
+</head>
+<body>
+
+     <div class="container">
+        {% if validator %}
+            <h1 class="text-center"> Учетная запись подтверждена!</h1>
+        {% else %}
+            <h1 class="text-center"> Вы уже подтверждали свою учетную запись! </h1>
+        {% endif %}
+    </div>
+
+
+    {# Assumes you setup the password_reset view in your URLconf <p><a href="{% url 'password_reset' %}">Lost password?</a></p> #}
+
+    {# <p><a href="./login">Lost password?</a></p> #}
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<script src=""></script>
+</body>
+</html>

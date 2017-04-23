@@ -48,9 +48,12 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         q = self.queryset
         username = self.request.query_params.get('username')
+        type = self.request.query_params.get('type')
         if 'pk' in self.kwargs:
             pk = self.kwargs['pk']
             q = q.filter(pk=pk)
+        elif type:
+            pass
         elif username:
             q = q.filter(username=username)
         else:

@@ -1,0 +1,20 @@
+{% block subject %}
+    Письмо!
+{% endblock %}
+
+{% block html %}
+    <h1>Привет, {{ user.username }} </h1>
+    <h2>Подтверди, что именно ты зарегистрировался у нас на сайте</h2>
+{#    <img src="{{ image }}">#}
+{#    <a href="{% url 'core:confirmation' pk=user.confirmation.pk slug=user.confirmation.uuid %}">#}
+{#        Подтвердить регистрацию#}
+{#    </a>#}
+{% endblock %}
+
+{% block text %}
+    <h1>Привет, {{ user.username }} </h1>
+    <h2>Подтверди, что именно ты зарегистрировался у нас на сайте</h2>
+{#    <a href="{% url 'core:confirmation' pk=user.confirmation.pk slug=user.confirmation.uuid %}">#}
+{#        Подтвердить регистрацию#}
+{#    </a>#}
+{% endblock %}

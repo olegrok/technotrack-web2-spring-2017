@@ -10,7 +10,7 @@ class LikesInLine(GenericStackedInline):
 
 
 class LikeAbleAdmin(admin.ModelAdmin):
-    inlines = [LikesInLine]
+    inlines = [LikesInLine, ]
 
     class Meta:
         abstract = True

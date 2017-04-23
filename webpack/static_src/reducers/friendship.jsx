@@ -15,7 +15,7 @@ export default function friendship(store = initialState, action) {
     case LOAD_FRIENDS:
       return update(store, { isLoading: { $set: true } });
     case LOAD_FRIENDS_SUCCESS:
-      const friends = action.friends.map(
+      const friends = action.users.map(
             friend => (<FriendComponent key={friend} id={friend} type={action.friendshipType} />),
           );
 

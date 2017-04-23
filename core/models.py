@@ -4,14 +4,17 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.urls import reverse
+import uuid
 
 
 class User(AbstractUser):
-    avatar = models.ImageField(u'фото', blank=True, upload_to='avatars')
-    # REQUIRED_FIELDS = ['e-mail', 'first_name', 'last_name', ]
+    avatar = models.ImageField(u'фото', blank=True, upload_to=u'avatars')
+    confirmed = models.BooleanField(default=False, verbose_name=u'подтверждение')
+    email = models.EmailField(blank=False, verbose_name=_('e-mail address'))
 
     class Meta:
         verbose_name = u'пользователь'
@@ -61,3 +64,25 @@ class Attached(models.Model):
         abstract = True
         verbose_name = u'принадлежащий'
         verbose_name_plural = u'принадлежащие'
+
+
+class AccountValidation(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    user = models.OneToOneField(User, related_name=u'confirmation', blank=False, verbose_name='пользователь')
+    created = models.DateTimeField(auto_now_add=True, verbose_name=u'дата создания')
+    confirmed_date = models.DateTimeField(verbose_name=u'дата подтверждения', editable=True, blank=True, null=True)
+    confirmed = models.BooleanField(default=False, verbose_name=u'подтверждение')
+
+    class Meta:
+        verbose_name = u'подтверждение аккаунта'
+        verbose_name_plural = u'подтверждения аккаунтов'
+
+    def __str__(self):
+        return self.user.username
+
+    # todo adequate url
+    def get_absolute_url(self):
+        return 'http://localhost:8080{}'.format(reverse('core:confirmation', kwargs={
+            'pk': self.pk,
+            'slug': self.uuid,
+        }))

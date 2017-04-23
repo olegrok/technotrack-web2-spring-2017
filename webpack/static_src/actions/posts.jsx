@@ -1,13 +1,15 @@
+import { postSchema } from '../schemas';
+
 export const LOAD_POSTS = 'LOAD_POSTS';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
 export const LOAD_POSTS_FAIL = 'LOAD_POSTS_FAIL';
 export const ADD_POSTS = 'ADD_POSTS';
 export const SHOW_MODAL = 'SHOW_MODAL';
 
-export function addPosts(postList) {
+export function addPost(posts) {
   return {
     type: ADD_POSTS,
-    postList,
+    posts,
   };
 }
 
@@ -17,11 +19,11 @@ export function loadPosts() {
   };
 }
 
-export function loadPostsSuccess(posts, postIds = []) {
+export function loadPostsSuccess(posts, schema = postSchema) {
   return {
     type: LOAD_POSTS_SUCCESS,
     posts,
-    postIds,
+    schema,
   };
 }
 
@@ -46,9 +48,6 @@ export function fetchPosts() {
       {
         method: 'GET',
         credentials: 'same-origin',
-        body: {
-          format: 'json',
-        },
       })
       .then(promise => promise.json())
       .then((json) => {

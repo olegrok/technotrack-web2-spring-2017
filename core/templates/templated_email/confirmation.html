@@ -1,0 +1,19 @@
+{% block subject %}
+    Письмо!
+{% endblock %}
+
+{% block html %}
+    <h1>Привет, {{ user.username }} </h1>
+    <h2>Подтверди, что именно ты зарегистрировался у нас на сайте</h2>
+    <a target="_blank" href={{ user.confirmation.get_absolute_url }}>
+        <img src="{{ image }}">
+    </a>
+{% endblock %}
+
+{% block text %}
+    <h1>Привет, {{ user.username }} </h1>
+    <h2>Подтверди, что именно ты зарегистрировался у нас на сайте</h2>
+    <a target="_blank" href={{user.confirmation.get_absolute_url}} >
+        Подтвердить регистрацию
+    </a>
+{% endblock %}

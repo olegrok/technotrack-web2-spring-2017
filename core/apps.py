@@ -8,3 +8,4 @@ class CoreConfig(AppConfig):
 
     def ready(self):
         import api
+        import signals
