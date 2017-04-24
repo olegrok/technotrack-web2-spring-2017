@@ -11,10 +11,15 @@
 <body>
 
      <div class="container">
-        {% if validator %}
-            <h1 class="text-center"> Учетная запись подтверждена!</h1>
+        {% if expired %}
+            <h1 class="text-center"> Время действия ссылки истекло</h1>
+            <h1 class="text-center"> На ваш e-mail выслана новая</h1>
         {% else %}
-            <h1 class="text-center"> Вы уже подтверждали свою учетную запись! </h1>
+            {% if validator %}
+                <h1 class="text-center"> Учетная запись подтверждена!</h1>
+            {% else %}
+                <h1 class="text-center"> Вы уже подтверждали свою учетную запись! </h1>
+            {% endif %}
         {% endif %}
     </div>
 

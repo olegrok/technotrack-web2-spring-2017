@@ -21,6 +21,7 @@
                 <h2 class="form-signin-heading">Регистрация</h2>
                 {% if form.errors %}
                     <p class="error">Пожалуйста исправьте нижеприведённые ошибки.</p>
+                    {{ form.errors }}
                 {% endif %}
                 {% for field in form %}
                     <label class="sr-only">{{ field.label }}</label>

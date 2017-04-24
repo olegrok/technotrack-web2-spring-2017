@@ -1,7 +1,8 @@
 from django.conf.urls import url
 from .views import UserProfileView, RegisterView, AccountValidationView
 from django.contrib.auth.views import login, logout
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LogoutView
+from .views import LoginView
 from django.contrib.auth.decorators import login_required
 from application.settings import LOGIN_URL
 

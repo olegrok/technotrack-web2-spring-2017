@@ -19,6 +19,10 @@
 
       <form class="form-signin" method="post"> {% csrf_token %}
         <h2 class="form-signin-heading">Авторизация</h2>
+          {% if form.errors %}
+                    <p class="error">Пожалуйста исправьте нижеприведённые ошибки.</p>
+                    {{ form.errors }}
+          {% endif %}
         <label class="sr-only">Username</label>
         {% render_field form.username|attr:'autofocus' placeholder='Username' class+='form-control' %}
         <label class="sr-only">Password</label>

@@ -75,7 +75,9 @@ MIDDLEWARE = [
 
 INTERNAL_IPS = '127.0.0.1',
 
+# User settings
 AUTH_USER_MODEL = 'core.User'
+ACCOUNT_ACTIVATION_DAYS = 1
 
 ROOT_URLCONF = 'application.urls'
 
