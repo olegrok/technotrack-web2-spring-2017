@@ -81,6 +81,7 @@ class AccountValidation(models.Model):
         self.user.confirmed = True
         self.user.save()
         self.confirmed = True
+        self.confirmed_date = timezone.now()
         self.save()
 
     def update_uuid(self):
