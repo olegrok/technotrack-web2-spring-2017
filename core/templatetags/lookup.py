@@ -1,12 +1,6 @@
-from django import template
-
-register = template.Library()
+from django.template.defaulttags import register
 
 
-@register.filter(name='lookup')
-def cut(value, arg):
-    for key, value in value.iteritems():
-        print key, value
-    print 'TEST0', value, arg
-    print 'TEST1', value[arg]
-    return value[arg]
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
