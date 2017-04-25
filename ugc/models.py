@@ -21,3 +21,6 @@ class Post(LikeAble, EventAble):
 
     def get_author(self):
         return self.author
+
+    def __str__(self):
+        return '{}: {}'.format(self.author.username, self.content[:20])

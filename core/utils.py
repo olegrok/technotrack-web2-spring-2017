@@ -1,4 +1,3 @@
-from django.core.mail import EmailMessage
 from django.conf import settings
 from templated_email import send_templated_mail, get_templated_mail, InlineImage
 

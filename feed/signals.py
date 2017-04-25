@@ -1,11 +1,15 @@
 from django.db.models.signals import post_save, pre_save, post_init, post_delete, pre_delete
 from django.dispatch import receiver
 from .models import EventAble, Event
+from .tasks import event_creator
+from django.contrib.contenttypes.models import ContentType
 
 
 def create_event(instance, *args, **kwargs):
     if not instance.event.exists():
-        Event.objects.create(content_object=instance, author=instance.get_author(), title=instance.get_description())
+        # Event.objects.create(content_object=instance, author=instance.get_author(), title=instance.get_description())
+        # print instance
+        event_creator.apply_async(zip([instance.id, ], [ContentType.objects.get_for_model(instance).id, ]))
 
 
 def delete_event(instance, *args, **kwargs):

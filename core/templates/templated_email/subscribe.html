@@ -1,0 +1,28 @@
+{% load lookup %}
+
+{% block subject %}
+    Письмо!
+{% endblock %}
+
+{% block html %}
+    <h1>Привет, {{ user.username }} </h1>
+    {{ avas }}
+{#    {{ events }}#}
+    {% for event in events %}
+{#        {% event.author as author %}#}
+        {% if event.author.avatar %}
+            <img src="{{avas|lookup:event.author.username }}">
+        {% endif %}
+        {{ event.title }} <br>
+        {{ event.title.content }} <br>
+        {{ event.created }} <br>
+        <br>
+    {% empty %}
+        <h1> Ничего нового. Твоя жизнь скучна или у тебя нет друзей </h1>
+    {% endfor %}
+{% endblock %}
+
+{% block text %}
+    <h1>Привет, {{ user.username }} </h1>
+
+{% endblock %}

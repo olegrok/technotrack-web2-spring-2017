@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'social_django',
     'webpack_loader',
     'templated_email',
+    'django_celery_beat',
     'generic_relations',
     'widget_tweaks',
     'social.apps.django_app.default',
@@ -145,7 +146,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 

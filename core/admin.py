@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, AccountValidation
+from .models import User, AccountValidation, Subscribe
 from ugc.models import Post
 from .views import RegistrationForm
 
@@ -42,3 +42,8 @@ class AccountValidationAdmin(admin.ModelAdmin):
     readonly_fields = ['uuid', 'created', ]
     fields = ['user', 'confirmed', 'confirmed_date', 'uuid', 'created', ]
     list_display = ('__str__', 'created', 'confirmed_date', 'confirmed', )
+
+
+@admin.register(Subscribe)
+class SubscribeAdmin(admin.ModelAdmin):
+    pass

@@ -17,6 +17,12 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 #     }
 # }
 #
-# @app.task(bind=True)
-# def debug_task(self):
-#     print('Request: {0!r}'.format(self.request))
+
+app.conf.beat_schedule = {
+    'add-every-day': {
+        'task': 'core.tasks.periodic_broadcast',
+        # 'schedule': crontab(),
+        'schedule': crontab(),
+        'args': (),
+    },
+}

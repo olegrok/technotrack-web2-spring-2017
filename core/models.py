@@ -100,3 +100,14 @@ class AccountValidation(models.Model):
             'pk': self.pk,
             'slug': self.uuid,
         }))
+
+
+class Subscribe(models.Model):
+    user = models.ForeignKey(User, related_name='subscribes', verbose_name='пользователь')
+
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
+
+    def __str__(self):
+        return self.user.username
