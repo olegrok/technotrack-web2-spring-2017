@@ -8,12 +8,13 @@ from .models import User
 
 @task(bind=True, default_retry_delay=10)
 def send_activation_email(self, user_id):
+    user = User.objects.get(id=user_id)
     try:
-        user = User.objects.get(id=user_id)
+        send_mail_to_user('confirmation', 'soNet@admin.ru', user)
     except Exception as exc:
         raise self.retry(exc=exc)
 
-    send_mail_to_user('confirmation', 'soNet@admin.ru', user)
+
 
 
 from .models import Subscribe
@@ -36,21 +37,34 @@ def send_to_subscribers(self, id):
     if settings.DEBUG:
         recipient_list = [admin[0] for admin in settings.ADMINS]
 
-    avas = dict()
-    for q in query:
+    event_list = list(query)
+
+    # avas = dict()
+    for q in event_list:
         if q.author.avatar:
-            avas[q.author.username] = InlineImage(q.author.avatar.file.name, q.author.avatar.file.read())
-        print avas
+            # print q.author.avatar.file.name
+            # if q.author.username not in avas:
+            #     ava =
+            #     avas[q.author.username] = ava
+            # else:
+            #     ava = avas[q.author.username]
+            q.avatar = InlineImage('ava_{}.jpeg'.format(q.id), open(q.author.avatar.file.name, 'rb').read(), 'jpeg')
+        else:
+            q.avatar = None
+            # context['{}_ava'.format(q.author.username)] = ava
 
-    email = get_templated_mail('subscribe', {
-        'events': query,
-        'avas': avas,
+    context = {
+        'events': event_list,
         'user': user,
-    }, 'soNet@sub.ru', recipient_list)
+    }
 
+    email = get_templated_mail('subscribe', context, 'soNet@sub.ru', recipient_list)
+
+    for q in event_list:
+        if q.avatar:
+            q.avatar.attach_to_message(email)
     email.send()
 
-    print query
     return user.email
 
 
@@ -59,4 +73,4 @@ def periodic_broadcast(self):
     subs = Subscribe.objects.all()
     # print subs
     # print dir(Subscribe.objects.all())
-    res = send_to_subscribers.chunks(zip(map(lambda x: x.user.id, subs)), 4)()
+    res = send_to_subscribers.chunks(zip(map(lambda x: x.user.id, subs)), 4).apply_async()

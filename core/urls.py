@@ -13,5 +13,5 @@ urlpatterns = [
 
     url(r'^registration/$', RegisterView.as_view(), name='registration'),
     url(r'^profile/$', UserProfileView.as_view(), name='profile'),
-    url(r'^confirmation/(?P<pk>\d+)/(?P<slug>[-\w]+)/$', AccountValidationView.as_view(), name='confirmation')
+    url(r'^confirmation/(?P<pk>[-\w]+)/$', AccountValidationView.as_view(), name='confirmation')
 ]

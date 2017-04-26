@@ -67,7 +67,7 @@ class Attached(models.Model):
 
 
 class AccountValidation(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, verbose_name=u'UUID  ')
     user = models.OneToOneField(User, related_name=u'confirmation', blank=False, verbose_name='пользователь')
     created = models.DateTimeField(auto_now_add=True, verbose_name=u'дата создания')
     confirmed_date = models.DateTimeField(verbose_name=u'дата подтверждения', editable=True, blank=True, null=True)
@@ -98,7 +98,6 @@ class AccountValidation(models.Model):
     def get_absolute_url(self):
         return 'http://localhost:8080{}'.format(reverse('core:confirmation', kwargs={
             'pk': self.pk,
-            'slug': self.uuid,
         }))
 
 

@@ -11,7 +11,8 @@
     {% for event in events %}
 {#        {% event.author as author %}#}
         {% if event.author.avatar %}
-            <img src="{{ avas|get_item:event.author.username }}">
+{#            <img height="30" src="{{ avas|get_item:event.author.username }}">#}
+            <img height="30" src="{{ event.avatar }}">
         {% endif %}
         {{ event.title }} <br>
         {{ event.title.content }} <br>

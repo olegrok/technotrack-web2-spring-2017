@@ -9,7 +9,7 @@ def create_event(instance, *args, **kwargs):
     if not instance.event.exists():
         # Event.objects.create(content_object=instance, author=instance.get_author(), title=instance.get_description())
         # print instance
-        event_creator.apply_async(zip([instance.id, ], [ContentType.objects.get_for_model(instance).id, ]))
+        event_creator.apply_async([instance.id, ContentType.objects.get_for_model(instance).id], countdown=2)
 
 
 def delete_event(instance, *args, **kwargs):

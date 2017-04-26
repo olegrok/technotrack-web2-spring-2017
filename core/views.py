@@ -50,9 +50,6 @@ class AccountValidationView(DetailView):
     model = AccountValidation
     template_name = 'core/confirmation.html'
     context_object_name = 'validator'
-    slug_url_kwarg = 'slug'
-    slug_field = 'uuid'
-    query_pk_and_slug = True
 
     def get_context_data(self, **kwargs):
         context = super(AccountValidationView, self).get_context_data(**kwargs)
