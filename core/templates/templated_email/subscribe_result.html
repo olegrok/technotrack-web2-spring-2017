@@ -1,0 +1,22 @@
+{% block subject %}
+    Подписчики уведомлены!
+{% endblock %}
+
+{% block html %}
+    <h3>Привет, админ</h3>
+    {% for email_list in emails %}
+        {% for email in email_list  %}
+            {{ email }} <br>
+        {% endfor %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block text %}
+    <h3>Привет, админ </h3>
+    {% for email_list in emails %}
+        {% for email in email_list  %}
+            {{ email }} <br>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

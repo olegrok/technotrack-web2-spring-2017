@@ -1,7 +1,6 @@
 # coding: utf-8
 
-from celery import task, chunks
-from celery.schedules import crontab
+from celery import task, chord
 from .utils import send_mail_to_user
 from .models import User
 
@@ -39,19 +38,11 @@ def send_to_subscribers(self, id):
 
     event_list = list(query)
 
-    # avas = dict()
     for q in event_list:
         if q.author.avatar:
-            # print q.author.avatar.file.name
-            # if q.author.username not in avas:
-            #     ava =
-            #     avas[q.author.username] = ava
-            # else:
-            #     ava = avas[q.author.username]
             q.avatar = InlineImage('ava_{}.jpeg'.format(q.id), open(q.author.avatar.file.name, 'rb').read(), 'jpeg')
         else:
             q.avatar = None
-            # context['{}_ava'.format(q.author.username)] = ava
 
     context = {
         'events': event_list,
@@ -69,8 +60,19 @@ def send_to_subscribers(self, id):
 
 
 @task(bind=True)
+def send_results_to_admins(self, emails):
+    print "ADMEN"
+    recipient_list = [admin[0] for admin in settings.ADMINS]
+    email = get_templated_mail('subscribe_result', {
+        'emails': emails,
+    }, 'soNet@sub.ru', recipient_list)
+    email.send()
+    print emails
+
+
+@task(bind=True)
 def periodic_broadcast(self):
     subs = Subscribe.objects.all()
-    # print subs
-    # print dir(Subscribe.objects.all())
-    res = send_to_subscribers.chunks(zip(map(lambda x: x.user.id, subs)), 4).apply_async()
+    # res = send_to_subscribers.chunks(zip(map(lambda x: x.user.id, subs)), 4).apply_async()
+    group = send_to_subscribers.chunks(zip(map(lambda x: x.user.id, subs)), 4).group()
+    chord(group)(send_results_to_admins.s())

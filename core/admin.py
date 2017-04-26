@@ -33,7 +33,7 @@ class UserAdmin(BaseUserAdmin):
     )
 
     actions = [make_confirmed, ]
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'confirmed',)
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'confirmed', 'id', )
     add_form = RegistrationForm
 
 
